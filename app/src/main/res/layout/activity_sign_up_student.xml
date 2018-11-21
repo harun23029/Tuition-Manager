@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#c6d2c9"
+    tools:context=".SignUpStudent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/student_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            android:textSize="20dp"
+            android:paddingTop="10dp"
+            />
+        <EditText
+            android:id="@+id/student_school_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="School/College"
+            android:textSize="20dp"
+            android:paddingTop="10dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Class"
+            android:textSize="20dp"
+            android:paddingTop="10dp"/>
+        <Spinner
+            android:id="@+id/student_class_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/classes"
+            android:paddingTop="10dp">
+        </Spinner>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Section"
+            android:textSize="20dp"
+            android:paddingTop="10dp"/>
+        <Spinner
+            android:id="@+id/student_section_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/section"
+            android:paddingTop="10dp">
+        </Spinner>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gender"
+            android:textSize="20dp"
+            android:paddingTop="10dp"/>
+        <Spinner
+            android:id="@+id/student_gender_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/gender"
+            android:paddingTop="10dp">
+        </Spinner>
+        <EditText
+            android:id="@+id/student_address_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Address"
+            android:textSize="20dp"
+            android:paddingTop="10dp"
+            />
+        <EditText
+            android:id="@+id/student_phone_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone No"
+            android:textSize="20dp"
+            android:paddingTop="10dp"
+            android:inputType="number"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:onClick="signUpStudent"
+            android:textSize="20dp"
+            android:background="#7376af"
+            android:layout_marginTop="50dp" />
+
+
+
+    </LinearLayout>
+
+
+</ScrollView>

@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Tuition Manager</string>
+    <string name="email_phone_messege">Please Insert your phone number or email</string>
+    <string name="password_messege">Please enter a password of 6-10 characters</string>
+    <string name="confirm_password_messege">Password dont matching</string>
+    <string name="email_phone">01871445680</string>
+    <string name="password">harunmusa</string>
+    <string name="required">Please enter a value</string>
+    <string-array name="year">
+        <item>1st Year</item>
+        <item>2nd Year</item>
+        <item>3rd year</item>
+        <item>4th year</item>
+        <item>Masters</item>
+    </string-array>
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="section">
+        <item>None</item>
+        <item>Science</item>
+        <item>Humanities</item>
+        <item>Bussiness</item>
+    </string-array>
+    <string-array name="classes">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>College Admission</item>
+        <item>Varsity Admission</item>
+    </string-array>
+    <string name="title_activity_home_page">HomePage</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+</resources>
