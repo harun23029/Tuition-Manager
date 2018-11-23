@@ -1,5 +1,6 @@
 package com.example.coder87.tuitionmanager
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -17,7 +18,7 @@ class HomePage : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_profile -> {
-                message.setText("Profile")
+                message.setText(R.string.title_profile)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
@@ -34,18 +35,22 @@ class HomePage : AppCompatActivity() {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.home_page_icon_back, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_logout-> {
+            R.id.action_logout -> {
                 startActivity(Intent(this,
                         FirstPage::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+
     }
+
 }
