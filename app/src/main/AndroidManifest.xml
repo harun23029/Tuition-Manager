@@ -23,7 +23,7 @@
         <activity android:name=".SignUpStudent" />
         <activity
             android:name=".HomePage"
-            android:label="@string/title_activity_home_page2"
+            android:label="Tuition Manager"
             android:theme="@style/AppCompatTheme"/>
     </application>
 

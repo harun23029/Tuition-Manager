@@ -11,14 +11,25 @@
         android:id="@+id/home_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#049ce9"
+        android:background="#5f696e"
         android:paddingBottom="50dp"
         android:visibility="visible">
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </FrameLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                app:srcCompat="@drawable/ic_add_black_24dp" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/home_page_post_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
+        </LinearLayout>
 
     </ScrollView>
     <ScrollView
