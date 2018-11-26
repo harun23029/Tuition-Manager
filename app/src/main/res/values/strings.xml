@@ -5,6 +5,7 @@
     <string name="confirm_password_messege">Password dont matching</string>
     <string name="email_phone">01871445680</string>
     <string name="password">harunmusa</string>
+    <string name="signertype">tutor</string>
     <string name="required">Please enter a value</string>
     <string-array name="year">
         <item>1st Year</item>

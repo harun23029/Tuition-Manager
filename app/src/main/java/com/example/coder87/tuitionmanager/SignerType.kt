@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.*
+import java.io.File
 
 class SignerType : Activity() {
     private lateinit var nextButton: Button
@@ -14,6 +15,7 @@ class SignerType : Activity() {
     private lateinit var phoneInput:EditText
     private lateinit var passwordInput:EditText
     private lateinit var confirmPassInput:EditText
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,11 +30,13 @@ class SignerType : Activity() {
         nextButton.setOnClickListener {
             if (rbTutor.isChecked && validateInput())
             {
+
                 startActivity(Intent(this,
                         SignUpTutor::class.java))
             }
             else if (rbStudent.isChecked && validateInput())
             {
+
                 startActivity(Intent(this,
                         SignUpStudent::class.java))
             }

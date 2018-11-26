@@ -14,35 +14,52 @@ import kotlinx.android.synthetic.main.activity_home_page2.*
 
 class HomePage : AppCompatActivity() {
     private lateinit var homePage: ScrollView
-    private lateinit var profilePage: ScrollView
+    private lateinit var profilePageTutor: ScrollView
+    private lateinit var profilePageStudent: ScrollView
     private lateinit var notificationsPage: ScrollView
+
+    private  var signer:String="tutor"
 
     private fun bindWidgets()
     {
         homePage=findViewById(R.id.home_page)
-        profilePage=findViewById(R.id.profile_page)
+        profilePageTutor=findViewById(R.id.profile_page_tutor)
+        profilePageStudent=findViewById(R.id.profile_page_student)
         notificationsPage=findViewById(R.id.notifications_page)
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
+            R.id.navigation_profile -> {
+                homePage.visibility=View.INVISIBLE
+                notificationsPage.visibility=View.INVISIBLE
+                if(signer=="tutor")
+                {
+                    profilePageStudent.visibility=View.INVISIBLE
+                    profilePageTutor.visibility=View.VISIBLE
+                }
+                else{
+                    profilePageStudent.visibility=View.VISIBLE
+                    profilePageTutor.visibility=View.INVISIBLE
+                }
+
+
+                return@OnNavigationItemSelectedListener true
+            }
             R.id.navigation_home -> {
                 bindWidgets()
-                profilePage.visibility= View.INVISIBLE
+                profilePageStudent.visibility=View.INVISIBLE
+                profilePageTutor.visibility= View.INVISIBLE
                 notificationsPage.visibility= View.INVISIBLE
                 homePage.visibility= View.VISIBLE
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_profile -> {
-                notificationsPage.visibility=View.INVISIBLE
-                homePage.visibility=View.INVISIBLE
-                profilePage.visibility=View.VISIBLE
-                return@OnNavigationItemSelectedListener true
-            }
+
             R.id.navigation_notifications -> {
                 bindWidgets()
                 homePage.visibility=View.INVISIBLE
-                profilePage.visibility=View.INVISIBLE
+                profilePageTutor.visibility=View.INVISIBLE
+                profilePageStudent.visibility=View.INVISIBLE
                 notificationsPage.visibility=View.VISIBLE
                 return@OnNavigationItemSelectedListener true
             }
@@ -53,7 +70,6 @@ class HomePage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page2)
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
