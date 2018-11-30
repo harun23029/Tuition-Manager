@@ -173,9 +173,9 @@ class HomePage : AppCompatActivity() {
     private fun retrievePostsStudent() {
         // TODO: fetch card list from database/server
         postsStudent.clear()
-        postsStudent.add(PostStudent("Golam Mourshid","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK"))
-        postsStudent.add(PostStudent("Golam Mourshid","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK"))
-        postsStudent.add(PostStudent("Golam Mourshid","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK"))
+        postsStudent.add(PostStudent("Golam Mourshid posted 1h ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK"))
+        postsStudent.add(PostStudent("Golam Mourshid posted 2d ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK"))
+        postsStudent.add(PostStudent("Golam Mourshid posted 10 h ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK"))
 
     }
     private fun prepareHomePagePostStudent() {

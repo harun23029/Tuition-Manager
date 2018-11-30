@@ -24,8 +24,11 @@
         <activity
             android:name=".HomePage"
             android:label="Tuition Manager"
-            android:theme="@style/AppCompatTheme"/>
+            android:theme="@style/AppCompatTheme" />
+        <activity
+            android:name=".CrditPage"
+            android:label="@string/title_activity_scrolling" />
+        <activity android:name=".Credits"></activity>
     </application>
 
 </manifest>
-
