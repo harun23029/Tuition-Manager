@@ -39,7 +39,7 @@ class SignUpTutor : Activity() {
      fun signUpTutor(view: View) {
         if (validateInput()) {
             startActivity(Intent(this,
-                    HomePage::class.java))
+                    TermsAndConditions::class.java))
         }
     }
 

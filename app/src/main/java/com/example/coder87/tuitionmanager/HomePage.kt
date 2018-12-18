@@ -1,8 +1,10 @@
 package com.example.coder87.tuitionmanager
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -18,7 +20,8 @@ class HomePage : AppCompatActivity() {
     private lateinit var profilePageTutor: ScrollView
     private lateinit var profilePageStudent: ScrollView
     private lateinit var notificationsPage: ScrollView
-    
+    private lateinit var mp: MediaPlayer
+
     private var selectedSubmenu: Int=1
     private  var signer:String="tutor"
 
@@ -31,6 +34,11 @@ class HomePage : AppCompatActivity() {
         profilePageTutor=findViewById(R.id.profile_page_tutor)
         profilePageStudent=findViewById(R.id.profile_page_student)
         notificationsPage=findViewById(R.id.notifications_page)
+    }
+     fun createPost(view: View)
+    {
+        // CHeck who is the user student/tutor
+        startActivity(Intent(this,CreatePostTutor::class.java))
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -121,9 +129,9 @@ class HomePage : AppCompatActivity() {
     private fun retrievepostsTutor() {
         // TODO: fetch card list from database/server
          postsTutor.clear()
-         postsTutor.add(PostTutor("Harun-or-Rashid posted 25 mins ago","Tuition Wanted","Mirpur-10,Sewrapara,Kazipara,Taltola","Class 9-12","Physics,Math,ICT","3 days per week","8000-1200 TK"))
-         postsTutor.add(PostTutor("Rajib Hossain posted 10 hour 25 mins ago","Tuition Wanted","Dhanmondi,Jigatole","Class 9-12","Chemistry,Biology","3 days per week","8000-1200 TK"))
-         postsTutor.add(PostTutor("Alamin Hossain posted  just now","Tuition Wanted","Farmgate,Tejgoan","Class 9-12","English,ICT","3 days per week","8000-1200 TK"))
+         postsTutor.add(PostTutor("Harun-or-Rashid posted 25 mins ago","Tuition Wanted","Mirpur-10,Sewrapara,Kazipara,Taltola","Class 9-12","Physics,Math,ICT","3 days per week","8000-1200 TK","0","0"))
+         postsTutor.add(PostTutor("Rajib Hossain posted 10 hour 25 mins ago","Tuition Wanted","Dhanmondi,Jigatole","Class 9-12","Chemistry,Biology","3 days per week","8000-1200 TK","0","0"))
+         postsTutor.add(PostTutor("Alamin Hossain posted  just now","Tuition Wanted","Farmgate,Tejgoan","Class 9-12","English,ICT","3 days per week","8000-1200 TK","0","0"))
     }
     private fun prepareHomePagePostTutor() {
         val cardsRecyclerView: RecyclerView = findViewById(R.id.home_page_post_holder)
@@ -153,6 +161,8 @@ class HomePage : AppCompatActivity() {
             holder.classPost.text = card.classPost
             holder.daysPost.text = card.daysPost
             holder.salaryPost.text = card.salaryPost
+            holder.thumbUpPost.text=card.thumbUpPost
+            holder.thumbDownPost.text=card.thumbDownPost
         }
     }
 
@@ -166,6 +176,8 @@ class HomePage : AppCompatActivity() {
         val subjectPost: TextView=view.post_subjects_tutor
         val daysPost: TextView=view.post_days_tutor
         val salaryPost: TextView=view.post_salary_tutor
+        val thumbUpPost:TextView=view.post_thumbsup_tutor
+        val thumbDownPost:TextView=view.post_thumbsdown_tutor
 
     }
 
@@ -173,9 +185,9 @@ class HomePage : AppCompatActivity() {
     private fun retrievePostsStudent() {
         // TODO: fetch card list from database/server
         postsStudent.clear()
-        postsStudent.add(PostStudent("Golam Mourshid posted 1h ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK"))
-        postsStudent.add(PostStudent("Golam Mourshid posted 2d ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK"))
-        postsStudent.add(PostStudent("Golam Mourshid posted 10 h ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK"))
+        postsStudent.add(PostStudent("Golam Mourshid posted 1h ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK","0","0"))
+        postsStudent.add(PostStudent("Golam Mourshid posted 2d ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK","0","0"))
+        postsStudent.add(PostStudent("Golam Mourshid posted 10 h ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK","0","0"))
 
     }
     private fun prepareHomePagePostStudent() {
@@ -206,6 +218,9 @@ class HomePage : AppCompatActivity() {
             holder.classPost.text = card.classPost
             holder.daysPost.text = card.daysPost
             holder.salaryPost.text = card.salaryPost
+            holder.universityPost.text=card.universityPost
+            holder.thumbUpPost.text=card.thumbUpPost
+            holder.thumbDownPost.text=card.thumbDownPost
 
         }
     }
@@ -221,8 +236,13 @@ class HomePage : AppCompatActivity() {
         val daysPost: TextView=view.post_days_student
         val salaryPost: TextView=view.post_salary_student
         val universityPost:TextView=view.post_university_student
-
+        val thumbUpPost:TextView=view.post_thumbsup_student
+        val thumbDownPost:TextView=view.post_thumbsup_student
     }
+    fun playSound(view: View) {
+        mp = MediaPlayer.create (this, R.raw.like)
+    }
+
 
 
 }

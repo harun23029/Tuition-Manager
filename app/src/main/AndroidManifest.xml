@@ -25,10 +25,10 @@
             android:name=".HomePage"
             android:label="Tuition Manager"
             android:theme="@style/AppCompatTheme" />
-        <activity
-            android:name=".CrditPage"
-            android:label="@string/title_activity_scrolling" />
-        <activity android:name=".Credits"></activity>
+        <activity android:name=".Credits" />
+        <activity android:name=".TermsAndConditions" />
+        <activity android:name=".CreatePostTutor" />
+        <activity android:name=".CreatePostTuition"></activity>
     </application>
 
 </manifest>

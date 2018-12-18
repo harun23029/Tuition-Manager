@@ -35,7 +35,7 @@ class SignUpStudent : Activity() {
     fun signUpStudent(view: View) {
         if (validateInput()) {
             startActivity(Intent(this,
-                    HomePage::class.java))
+                    TermsAndConditions::class.java))
         }
     }
     private fun validateInput(): Boolean {
