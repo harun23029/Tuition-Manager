@@ -71,8 +71,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="--------------------or---------------------"
-                android:textSize="25dp"/>
+                android:text="Didn't have an account?"
+                android:textSize="20dp"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

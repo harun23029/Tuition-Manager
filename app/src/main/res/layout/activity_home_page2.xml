@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomePage">
+    <ScrollView
+        android:id="@+id/home_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#7e8b91"
+        android:paddingBottom="50dp"
+        android:visibility="visible">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/create_post_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="createPost"
+                android:layout_gravity="top|end"
+                android:background="#5effef"
+                app:srcCompat="@drawable/ic_add_black_24dp" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/home_page_post_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"/>
+        </LinearLayout>
+
+    </ScrollView>
+    <ScrollView
+        android:id="@+id/notifications_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#22ff6f"
+        android:paddingBottom="50dp"
+        android:visibility="invisible">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
+    </ScrollView>
+
+
+    <ScrollView
+        android:id="@+id/profile_page_tutor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:paddingBottom="50dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ddedea"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/picture_profile_tutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/harun"/>
+
+                <TextView
+                    android:id="@+id/name_profile_tutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Harun-or-Rashid"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textSize="20dp"/>
+                <TextView
+                    android:id="@+id/university_profile_tutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="University of Dhaka"
+                    android:textSize="15dp"/>
+                <TextView
+                    android:id="@+id/dept_profile_tutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="CSE"
+                    android:textSize="15dp"/>
+                <TextView
+                    android:id="@+id/year_profile_tutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2nd Year"
+                    android:textSize="15dp"/>
+                <TextView
+                    android:id="@+id/exp_profile_tutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="(3 years experience)"
+                    android:textSize="15dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/gender_profile_tutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:textSize="15dp"
+                    android:layout_margin="10dp"
+                    android:drawableLeft="@drawable/ic_supervisor_account_black_24dp"/>
+                <TextView
+                    android:id="@+id/address_profile_tutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="441/1F west Sewrapara Mirpur,Dhaka."
+                    android:textSize="15dp"
+                    android:layout_margin="10dp"
+                    android:drawableLeft="@drawable/ic_place_black_24dp"/>
+                <TextView
+                    android:id="@+id/phone_profile_tutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="01871445680"
+                    android:textSize="15dp"
+                    android:layout_margin="10dp"
+                    android:drawableLeft="@drawable/ic_phone_black_24dp"/>
+                <TextView
+                    android:id="@+id/email_profile_tutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="harunducse23rd@gmail.com"
+                    android:textSize="15dp"
+                    android:layout_margin="10dp"
+                    android:drawableLeft="@drawable/ic_email_black_24dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    <ScrollView
+        android:id="@+id/profile_page_student"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:paddingBottom="50dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ddedea"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/picture_profile_student"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/harun"/>
+
+                <TextView
+                    android:id="@+id/name_profile_student"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Alamin Hossain"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textSize="20dp"/>
+                <TextView
+                    android:id="@+id/school_profile_student"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dhaka College"
+                    android:textSize="15dp"/>
+                <TextView
+                    android:id="@+id/class_profile_student"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Class 12"
+                    android:textSize="15dp"/>
+                <TextView
+                    android:id="@+id/section_profile_tutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Science"
+                    android:textSize="15dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/gender_profile_student"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:textSize="15dp"
+                    android:layout_margin="10dp"
+                    android:drawableLeft="@drawable/ic_supervisor_account_black_24dp"/>
+                <TextView
+                    android:id="@+id/address_profile_student"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="441/1F west Sewrapara Mirpur,Dhaka."
+                    android:textSize="15dp"
+                    android:layout_margin="10dp"
+                    android:drawableLeft="@drawable/ic_place_black_24dp"/>
+                <TextView
+                    android:id="@+id/phone_profile_student"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="01871445680"
+                    android:textSize="15dp"
+                    android:layout_margin="10dp"
+                    android:drawableLeft="@drawable/ic_phone_black_24dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation" />
+
+</android.support.constraint.ConstraintLayout>
