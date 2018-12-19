@@ -245,7 +245,7 @@ class HomePage : AppCompatActivity() {
     }
     fun openMap(view: View){
             startActivity(Intent(this,
-                    TutorToStudentMap::class.java))
+                    Map::class.java))
     }
 
 

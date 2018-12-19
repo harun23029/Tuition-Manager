@@ -47,10 +47,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <activity
-            android:name=".TutorToStudentMap"
-            android:label="@string/title_activity_tutor_to_student_map" />
+            android:name=".Map"
+            android:label="@string/title_activity_map"></activity>
     </application>
 
 </manifest>
