@@ -241,6 +241,11 @@ class HomePage : AppCompatActivity() {
     }
     fun playSound(view: View) {
         mp = MediaPlayer.create (this, R.raw.like)
+        mp.start()
+    }
+    fun openMap(view: View){
+            startActivity(Intent(this,
+                    TutorToStudentMap::class.java))
     }
 
 
