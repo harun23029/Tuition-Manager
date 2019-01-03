@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreatePostTuition">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <EditText
+                android:id="@+id/create_post_tuition_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Location"
+                android:inputType="text"
+                android:padding="5dp"/>
+            <EditText
+                android:id="@+id/create_post_tuition_class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Class (Student)"
+                android:inputType="text"
+                android:padding="5dp"/>
+            <EditText
+                android:id="@+id/create_post_tuition_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Subjects (Student)"
+                android:inputType="text"
+                android:padding="5dp"/>
+            <EditText
+                android:id="@+id/create_post_tuition_days"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Days Per week"
+                android:inputType="text"
+                android:padding="5dp"/>
+            <EditText
+                android:id="@+id/create_post_tuition_salary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Remuneration"
+                android:inputType="text"
+                android:padding="5dp"/>
+            <EditText
+                android:id="@+id/create_post_tuition_university"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Preferable Universities(Tutor)"
+                android:inputType="text"
+                android:padding="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="30dp">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="  Post  "/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="  Back  "
+                    android:onClick="backToHome"
+                    android:layout_marginLeft="20dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

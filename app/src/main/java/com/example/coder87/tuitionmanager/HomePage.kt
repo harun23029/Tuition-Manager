@@ -4,7 +4,6 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -60,7 +59,6 @@ class HomePage : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_home -> {
-                bindWidgets()
                 profilePageStudent.visibility=View.INVISIBLE
                 profilePageTutor.visibility= View.INVISIBLE
                 notificationsPage.visibility= View.INVISIBLE
@@ -78,7 +76,6 @@ class HomePage : AppCompatActivity() {
             }
 
             R.id.navigation_notifications -> {
-                bindWidgets()
                 homePage.visibility=View.INVISIBLE
                 profilePageTutor.visibility=View.INVISIBLE
                 profilePageStudent.visibility=View.INVISIBLE
@@ -92,6 +89,7 @@ class HomePage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page2)
+        bindWidgets()
         retrievepostsTutor()
         prepareHomePagePostTutor()
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
