@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#c6d2c9"
+    tools:context=".SignerType">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
+            android:text="Select type how do you want to sign up"
+            android:textSize="20dp"
+            android:paddingTop="10dp"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            android:id="@+id/sinner_type_radio_group">
+
+            <RadioButton
+                android:id="@+id/radioButton_tutor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I am a tutor"
+                android:textSize="18dp" />
+
+            <RadioButton
+                android:id="@+id/radioButton_student"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I am a  student/gurdian"
+                android:textSize="18dp"/>
+            <EditText
+                android:id="@+id/email_phone_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:hint="Email or Phone Number"
+                android:drawableLeft="@drawable/ic_contact_mail_black_24dp"
+                android:drawablePadding="10dp"
+                android:paddingTop="10dp"/>
+            <EditText
+                android:id="@+id/password_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:maxLength="10"
+                android:inputType="textPassword"
+                android:hint="Password (6-10 characters)"
+                android:drawableLeft="@drawable/ic_vpn_key_black_24dp"
+                android:drawablePadding="10dp"
+                android:paddingTop="10dp"/>
+            <EditText
+                android:id="@+id/confirm_password_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:maxLength="10"
+                android:inputType="textPassword"
+                android:hint="Confirm Password"
+                android:drawableLeft="@drawable/ic_vpn_key_black_24dp"
+                android:drawablePadding="10dp"
+                android:paddingTop="10dp"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continue"
+                android:id="@+id/next_button_signer_type"
+                android:layout_marginTop="50dp"
+                android:textSize="20dp"
+                android:background="#7376af"
+                android:onClick="signUp"/>
+        </RadioGroup>
+    </LinearLayout>
+
+
+
+</ScrollView>

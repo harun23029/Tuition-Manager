@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "872446187240",
+    "firebase_url": "https://tuition-manager-23029.firebaseio.com",
+    "project_id": "tuition-manager-23029",
+    "storage_bucket": "tuition-manager-23029.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872446187240:android:ca15c67c1b0076c3",
+        "android_client_info": {
+          "package_name": "com.example.coder87.tuitionmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "872446187240-0sari22fqte9qpp1qceqo55hm4ghf5us.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.coder87.tuitionmanager",
+            "certificate_hash": "4df83af888a76eb2e178e574654c0257e855c7db"
+          }
+        },
+        {
+          "client_id": "872446187240-np28e6k1e347oju998bkhrpe7fh0agth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIzf_6NTmSgOuiFj-rk9LOhvYIekXQlKE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "872446187240-np28e6k1e347oju998bkhrpe7fh0agth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

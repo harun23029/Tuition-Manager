@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    android:paddingBottom="20dp"
+    android:background="#ded0d0"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/harun"
+            app:civ_border_width="0dp"
+            android:layout_margin="3dp"
+            app:civ_border_color="#FF22"/>
+        <TextView
+            android:id="@+id/post_time_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Golam Mourshid posted 20 mins ago"
+            android:textSize="15dp"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/delete_button_post_student"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/ic_delete_black_24dp"
+        android:layout_gravity="right"
+        />
+
+    <TextView
+        android:id="@+id/post_type_student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tutor Wanted"
+        android:padding="10dp"
+        android:textSize="20dp"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/post_class_student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:drawableLeft="@drawable/ic_class_black_24dp"
+        android:drawablePadding="15dp"
+        android:text="Class 9-12"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/post_subjects_student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:drawableLeft="@drawable/ic_import_contacts_black_24dp"
+        android:drawablePadding="15dp"
+        android:text="Physics,Math,ICT"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/post_location_student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:drawableLeft="@drawable/ic_place_black_24dp"
+        android:drawablePadding="10dp"
+        android:textSize="15dp"
+        android:text="Mirpur-10,Kazipara,Sewrapara,Taltola"/>
+    <TextView
+        android:id="@+id/post_days_student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:drawableLeft="@drawable/ic_date_range_black_24dp"
+        android:drawablePadding="15dp"
+        android:text="3 days per week"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/post_university_student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:drawableLeft="@drawable/ic_school_black_24dp"
+        android:drawablePadding="15dp"
+        android:text="Preferable tutor from BUET,DU"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/post_salary_student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:drawableLeft="@drawable/ic_attach_money_black_24dp"
+        android:drawablePadding="15dp"
+        android:text="8000-12000 TK"
+        android:textSize="15dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/post_thumbsup_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="0"
+            android:drawablePadding="5dp"
+            android:onClick="playSound"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_thumb_up_black_24dp"/>
+        <TextView
+            android:id="@+id/post_thumbsdown_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="0"
+            android:drawablePadding="5dp"
+            android:clickable="true"
+            android:onClick="playSound"
+            android:drawableLeft="@drawable/ic_thumb_down_black_24dp" />
+        <android.support.v7.widget.CardView
+            android:layout_width="110dp"
+            android:layout_height="30dp"
+            app:cardCornerRadius="10dp"
+            android:contextClickable="true"
+            android:clickable="true"
+            android:onClick="openMap"
+            android:layout_marginLeft="15dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="See Map"
+                android:drawableLeft="@drawable/ic_map_black_24dp"
+                android:drawablePadding="5dp"
+                android:layout_gravity="center"
+                android:paddingLeft="5dp"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="110dp"
+            android:layout_height="30dp"
+            app:cardCornerRadius="10dp"
+            android:clickable="true"
+            android:contextClickable="true"
+            android:onClick="viewProfileStudent"
+            android:layout_marginLeft="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Profile"
+                android:layout_gravity="center"
+                android:paddingLeft="5dp"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>
