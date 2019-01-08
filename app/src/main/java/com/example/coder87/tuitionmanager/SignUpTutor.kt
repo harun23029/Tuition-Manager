@@ -81,7 +81,6 @@ class SignUpTutor : Activity() {
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (data != null)
         {
             val contentURI = data!!.data
