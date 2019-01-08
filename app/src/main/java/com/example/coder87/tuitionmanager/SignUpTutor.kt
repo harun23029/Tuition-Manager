@@ -66,7 +66,6 @@ class SignUpTutor : Activity() {
                         allInputsValid = false
                     }
                 }
-
         return allInputsValid
     }
 
