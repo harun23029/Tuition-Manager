@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import com.google.firebase.database.FirebaseDatabase
 
 class FirstPage : Activity() {
 
@@ -14,6 +16,7 @@ class FirstPage : Activity() {
         setContentView(R.layout.activity_firstpage)
     }
     fun signIn(view: View) {
+        saveToFirebase()
         startActivity(Intent(this,
                 SignIn::class.java))
     }
@@ -36,5 +39,9 @@ class FirstPage : Activity() {
             else -> super.onOptionsItemSelected(item)
         }
 
+    }
+    fun saveToFirebase() {
+        val db = FirebaseDatabase.getInstance().getReference("messege")
+        db.setValue("harun or rashid.").addOnCompleteListener { Toast.makeText(this, "save to firebase successfully", Toast.LENGTH_SHORT).show() }
     }
 }

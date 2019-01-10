@@ -4,11 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Spinner
+import android.widget.*
 import org.w3c.dom.Text
 import java.io.IOException
 
@@ -23,6 +21,8 @@ class SignUpTutor : Activity() {
     private lateinit var emailInput: EditText
     private lateinit var experienceInput: EditText
     private lateinit var expectedArea: EditText
+
+    private lateinit var emailSigner:EditText
 
     private var imageview: ImageView? = null
     private var selectButton: Button? =null
@@ -48,17 +48,25 @@ class SignUpTutor : Activity() {
         emailInput=findViewById(R.id.tutor_email_input)
         experienceInput=findViewById(R.id.tutor_experience_input)
         expectedArea=findViewById(R.id.tutor_expected_area)
+
+
+
+
     }
      fun signUpTutor(view: View) {
+
         if (validateInput()) {
             startActivity(Intent(this,
                     TermsAndConditions::class.java))
         }
+
     }
 
     private fun validateInput(): Boolean {
         var allInputsValid = true
         bindWidgets();
+
+
         arrayOf(nameInput,universityInput,deptInput,addressInput,phoneInput,emailInput,experienceInput,expectedArea)
                 .forEach { input ->
                     if (input.text.isEmpty()) {

@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "872446187240",
-    "firebase_url": "https://tuition-manager-23029.firebaseio.com",
-    "project_id": "tuition-manager-23029",
-    "storage_bucket": "tuition-manager-23029.appspot.com"
+    "project_number": "98871831973",
+    "firebase_url": "https://tuition-manager-4ce36.firebaseio.com",
+    "project_id": "tuition-manager-4ce36",
+    "storage_bucket": "tuition-manager-4ce36.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:872446187240:android:ca15c67c1b0076c3",
+        "mobilesdk_app_id": "1:98871831973:android:ca15c67c1b0076c3",
         "android_client_info": {
           "package_name": "com.example.coder87.tuitionmanager"
         }
       },
       "oauth_client": [
         {
-          "client_id": "872446187240-0sari22fqte9qpp1qceqo55hm4ghf5us.apps.googleusercontent.com",
+          "client_id": "98871831973-aa65nkvf05kl77nmeatgjvkm4hkr74cu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.coder87.tuitionmanager",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "872446187240-np28e6k1e347oju998bkhrpe7fh0agth.apps.googleusercontent.com",
+          "client_id": "98871831973-18509851asrr9r9sid9fl1tq6q5nhsjm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAIzf_6NTmSgOuiFj-rk9LOhvYIekXQlKE"
+          "current_key": "AIzaSyAltKa8HsrJ9W_4fz1fYymUoU1fRLmt7VE"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "872446187240-np28e6k1e347oju998bkhrpe7fh0agth.apps.googleusercontent.com",
+              "client_id": "98871831973-18509851asrr9r9sid9fl1tq6q5nhsjm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
