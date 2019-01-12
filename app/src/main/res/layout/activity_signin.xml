@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_contact_mail_black_24dp"
+            android:background="@android:drawable/editbox_background"
             android:drawablePadding="10dp"
             android:inputType="text" />
 
@@ -40,6 +41,7 @@
             android:maxLength="10"
             android:hint="6-10 characters"
             android:drawableLeft="@drawable/ic_vpn_key_black_24dp"
+            android:background="@android:drawable/editbox_background"
             android:drawablePadding="10dp"
             android:id="@+id/password_signin"
             />

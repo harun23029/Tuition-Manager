@@ -6,7 +6,13 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.*
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.activity_signertype.*
 import java.io.File
+import java.io.FileWriter
+const val emailPhone="email"
+const val password="password"
+const val type="signerType"
 
 class SignerType : Activity() {
     private lateinit var nextButton: Button
@@ -27,18 +33,24 @@ class SignerType : Activity() {
          rbTutor = findViewById (R.id.radioButton_tutor)
          rbStudent = findViewById (R.id.radioButton_student)
 
+        bindWidgets()
+
         nextButton.setOnClickListener {
             if (rbTutor.isChecked && validateInput())
             {
-
-                startActivity(Intent(this,
-                        SignUpTutor::class.java))
+                val intent=Intent(this,SignUpTutor::class.java)
+                intent.putExtra(type,"Tutor")
+                intent.putExtra(emailPhone,email_phone_signup.text.toString())
+                intent.putExtra(password,password_signup.text.toString())
+                startActivity(intent)
             }
             else if (rbStudent.isChecked && validateInput())
             {
-
-                startActivity(Intent(this,
-                        SignUpStudent::class.java))
+                val intent=Intent(this, SignUpStudent::class.java)
+                intent.putExtra(type,"Student")
+                intent.putExtra(emailPhone,email_phone_signup.text.toString())
+                intent.putExtra(password,password_signup.text.toString())
+                startActivity(intent)
             }
             else{
                 printToast();
@@ -80,4 +92,6 @@ class SignerType : Activity() {
         val toast = Toast.makeText(this, "Please select an option",Toast.LENGTH_SHORT)
         toast.show()
     }
+
+
 }

@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c6d2c9"
     tools:context=".SignUpStudent">
 
     <LinearLayout
@@ -18,6 +17,7 @@
             android:id="@+id/student_name_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
             android:hint="Name"
             android:textSize="20dp"
             android:paddingTop="10dp"
@@ -26,6 +26,7 @@
             android:id="@+id/student_school_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
             android:hint="School/College"
             android:textSize="20dp"
             android:paddingTop="10dp"
@@ -73,6 +74,7 @@
             android:id="@+id/student_address_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
             android:hint="Address"
             android:textSize="20dp"
             android:paddingTop="10dp"
@@ -81,6 +83,7 @@
             android:id="@+id/student_phone_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
             android:hint="Phone No"
             android:textSize="20dp"
             android:paddingTop="10dp"
@@ -111,9 +114,6 @@
             android:textSize="20dp"
             android:background="#7376af"
             android:layout_marginTop="50dp" />
-
-
-
     </LinearLayout>
 
 

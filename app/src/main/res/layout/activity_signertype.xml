@@ -46,7 +46,9 @@
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:hint="Email or Phone Number"
+                android:layout_marginTop="15dp"
                 android:drawableLeft="@drawable/ic_contact_mail_black_24dp"
+                android:background="@android:drawable/editbox_background"
                 android:drawablePadding="10dp"
                 android:paddingTop="10dp"/>
             <EditText
@@ -58,6 +60,7 @@
                 android:inputType="textPassword"
                 android:hint="Password (6-10 characters)"
                 android:drawableLeft="@drawable/ic_vpn_key_black_24dp"
+                android:background="@android:drawable/editbox_background"
                 android:drawablePadding="10dp"
                 android:paddingTop="10dp"/>
             <EditText
@@ -69,6 +72,7 @@
                 android:inputType="textPassword"
                 android:hint="Confirm Password"
                 android:drawableLeft="@drawable/ic_vpn_key_black_24dp"
+                android:background="@android:drawable/editbox_background"
                 android:drawablePadding="10dp"
                 android:paddingTop="10dp"/>
             <Button

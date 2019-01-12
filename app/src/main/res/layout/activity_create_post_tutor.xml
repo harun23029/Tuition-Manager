@@ -19,6 +19,7 @@
                 android:id="@+id/create_post_tutor_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Locations"
                 android:inputType="text"
                 android:padding="5dp"/>
@@ -26,6 +27,7 @@
                 android:id="@+id/create_post_tutor_class"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Classes"
                 android:inputType="text"
                 android:padding="5dp"/>
@@ -33,6 +35,7 @@
                 android:id="@+id/create_post_tutor_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Subjects"
                 android:inputType="text"
                 android:padding="5dp"/>
@@ -40,6 +43,7 @@
                 android:id="@+id/create_post_tutor_days"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Days Per week"
                 android:inputType="text"
                 android:padding="5dp"/>
@@ -47,6 +51,7 @@
                 android:id="@+id/create_post_tutor_salary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Remuneration"
                 android:inputType="text"
                 android:padding="5dp"/>

@@ -7,8 +7,19 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.view.View
 import android.widget.*
+import com.google.firebase.database.FirebaseDatabase
 import org.w3c.dom.Text
 import java.io.IOException
+const val NameTutor="name"
+const val UniversityTutor="school"
+const val AddressTutor="address"
+const val DeptTutor="class"
+const val YearTutor="section"
+const val GenderTutor="male"
+const val PhoneTutor="phone"
+const val EmailTutor=""
+const val ExperienceTutor=""
+const val ExpectedAreaTutor=""
 
 class SignUpTutor : Activity() {
     private lateinit var nameInput: EditText
@@ -28,13 +39,16 @@ class SignUpTutor : Activity() {
     private var selectButton: Button? =null
     private val GALLERY = 1
 
+    var ep:String=""
+    var pass:String=""
+    var tp:String=""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_tutor)
 
         selectButton=findViewById(R.id.select_pp__tutor) as Button
         imageview = findViewById(R.id.pp_tutor) as ImageView
-
         selectButton!!.setOnClickListener{ chooseImageFromGallery() }
     }
     private fun bindWidgets() {
@@ -56,8 +70,22 @@ class SignUpTutor : Activity() {
      fun signUpTutor(view: View) {
 
         if (validateInput()) {
-            startActivity(Intent(this,
-                    TermsAndConditions::class.java))
+            getValues()
+            val intent=Intent(this,TermsAndConditions::class.java)
+            intent.putExtra(type,tp)
+            intent.putExtra(emailPhone,ep)
+            intent.putExtra(password,pass)
+            intent.putExtra(NameTutor,nameInput.text.toString())
+            intent.putExtra(UniversityTutor,universityInput.text.toString())
+            intent.putExtra(DeptTutor,deptInput.text.toString())
+            intent.putExtra(YearTutor,yearInput.selectedItem.toString())
+            intent.putExtra(GenderTutor,genderInput.selectedItem.toString())
+            intent.putExtra(AddressTutor,addressInput.text.toString())
+            intent.putExtra(EmailTutor,emailInput.text.toString())
+            intent.putExtra(PhoneTutor,phoneInput.text.toString())
+            intent.putExtra(ExperienceTutor,experienceInput.text.toString())
+            intent.putExtra(ExpectedAreaTutor,expectedArea.text.toString())
+            startActivity(intent)
         }
 
     }
@@ -105,6 +133,10 @@ class SignUpTutor : Activity() {
 
     }
 
-
+    fun getValues(){
+        ep=intent.getStringExtra(emailPhone)
+        pass=intent.getStringExtra(password)
+        tp=intent.getStringExtra(type)
+    }
 
 }

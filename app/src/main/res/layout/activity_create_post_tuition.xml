@@ -18,6 +18,7 @@
                 android:id="@+id/create_post_tuition_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Location"
                 android:inputType="text"
                 android:padding="5dp"/>
@@ -25,6 +26,7 @@
                 android:id="@+id/create_post_tuition_class"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Class (Student)"
                 android:inputType="text"
                 android:padding="5dp"/>
@@ -32,6 +34,7 @@
                 android:id="@+id/create_post_tuition_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Subjects (Student)"
                 android:inputType="text"
                 android:padding="5dp"/>
@@ -39,6 +42,7 @@
                 android:id="@+id/create_post_tuition_days"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Days Per week"
                 android:inputType="text"
                 android:padding="5dp"/>
@@ -47,12 +51,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Remuneration"
+                android:background="@android:drawable/editbox_background"
                 android:inputType="text"
                 android:padding="5dp"/>
             <EditText
                 android:id="@+id/create_post_tuition_university"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Preferable Universities(Tutor)"
                 android:inputType="text"
                 android:padding="5dp"/>

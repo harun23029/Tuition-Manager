@@ -41,7 +41,16 @@ class FirstPage : Activity() {
 
     }
     fun saveToFirebase() {
-        val db = FirebaseDatabase.getInstance().getReference("messege")
-        db.setValue("harun or rashid.").addOnCompleteListener { Toast.makeText(this, "save to firebase successfully", Toast.LENGTH_SHORT).show() }
+
+        val s:String
+        s="harun"
+        val ref= FirebaseDatabase.getInstance().reference
+        ref.child("Email").setValue(s).addOnCompleteListener{
+            Toast.makeText(applicationContext,"Saved", Toast.LENGTH_SHORT).show()
+        }
+
+
     }
+
+
 }

@@ -7,12 +7,17 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Spinner
+import android.widget.*
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_sign_up_student.*
 import java.io.IOException
+const val NameStudent="name"
+const val SchoolStudent="school"
+const val AddressStudent="address"
+const val ClassStudent="class"
+const val SectionStudent="section"
+const val GenderStudent="male"
+const val PhoneStudent="phone"
 
 class SignUpStudent : Activity() {
 
@@ -24,9 +29,14 @@ class SignUpStudent : Activity() {
     private lateinit var genderInput: Spinner
     private lateinit var phoneInput: EditText
 
+
     private var imageview: ImageView? = null
     private var selectButton:Button? =null
     private val GALLERY = 1
+
+    var ep:String=""
+    var pass:String=""
+    var tp:String=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +45,7 @@ class SignUpStudent : Activity() {
         imageview = findViewById(R.id.pp_student) as ImageView
 
         selectButton!!.setOnClickListener{ chooseImageFromGallery() }
+
 
     }
 
@@ -49,8 +60,19 @@ class SignUpStudent : Activity() {
     }
     fun signUpStudent(view: View) {
         if (validateInput()) {
-            startActivity(Intent(this,
-                    TermsAndConditions::class.java))
+            getValues()
+            val intent=Intent(this,TermsAndConditions::class.java)
+            intent.putExtra(type,tp)
+            intent.putExtra(emailPhone,ep)
+            intent.putExtra(password,pass)
+            intent.putExtra(NameStudent,nameInput.text.toString())
+            intent.putExtra(SchoolStudent,schoolInput.text.toString())
+            intent.putExtra(AddressStudent,addressInput.text.toString())
+            intent.putExtra(ClassStudent,classInput.selectedItem.toString())
+            intent.putExtra(SectionStudent,sectionInput.selectedItem.toString())
+            intent.putExtra(GenderStudent,genderInput.selectedItem.toString())
+            intent.putExtra(PhoneStudent,phoneInput.text.toString())
+            startActivity(intent)
         }
     }
     private fun validateInput(): Boolean {
@@ -95,6 +117,14 @@ class SignUpStudent : Activity() {
         }
 
     }
+    fun getValues(){
+        ep=intent.getStringExtra(emailPhone)
+        pass=intent.getStringExtra(password)
+        tp=intent.getStringExtra(type)
+    }
+
+
+
 
 
 }
