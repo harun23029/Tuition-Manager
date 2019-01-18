@@ -8,23 +8,57 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.profile_demo_teacher.view.*
 
 class ViewProfileTutor : Activity() {
 
     private var profileTutor=ArrayList<ProfileTutor>()
+    var signer=""
+    var sigenrId=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_profile_tutor)
+        getValues()
         retrieveProfileTutor()
-        prepareProfileTutor()
     }
 
     private fun retrieveProfileTutor() {
-        // TODO: fetch card list from database/server
+
         profileTutor.clear()
-        profileTutor.add(ProfileTutor("Harun-or-Rashid","University of Dhaka","CSE","3rd year","4 year experience","Male","441/1F west Sewrapara Mirpur,Dhaka.","01871445680","harunducse23rd@gmail.com"))
+        val firebaseStorage = FirebaseStorage.getInstance()
+        var propic = firebaseStorage.getReference().child("Tutor/"+sigenrId+".jpg").downloadUrl
+        // Glide.with(this@HomePage).asBitmap().load(propic).into(picture_profile_student)
+
+        var dataBase= FirebaseDatabase.getInstance().getReference(signer).child(sigenrId)
+        dataBase.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var name=p0.child("Name").getValue().toString()
+                var university=p0.child("University").getValue().toString()
+                var dept=p0.child("Department").getValue().toString()
+                var year=p0.child("Year").getValue().toString()
+                var exp=p0.child("Experience").getValue().toString()
+                var gender=p0.child("Gender").getValue().toString()
+                var address=p0.child("Address").getValue().toString()
+                var phone=p0.child("Phone").getValue().toString()
+                var email=p0.child("Email").getValue().toString()
+
+                profileTutor.add(ProfileTutor(name,university,dept,year,exp,gender,address,phone,email))
+                prepareProfileTutor()
+
+
+            }
+
+        })
 
     }
     private fun prepareProfileTutor() {
@@ -73,5 +107,9 @@ class ViewProfileTutor : Activity() {
         val phoneNo: TextView =view.phone_profile_tutor
         val email: TextView =view.email_profile_tutor
 
+    }
+    fun getValues(){
+        signer=intent.getStringExtra(type)
+        sigenrId=intent.getStringExtra(emailPhone)
     }
 }

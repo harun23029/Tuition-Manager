@@ -1,8 +1,10 @@
 package com.example.coder87.tuitionmanager
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.*
 import com.google.firebase.database.DatabaseReference
@@ -17,54 +19,16 @@ import java.io.FileReader
 class TermsAndConditions : Activity() {
     private lateinit var agreeBox:CheckBox
 
-    private lateinit var rbTutor: RadioButton
-    private lateinit var rbStudent: RadioButton
-    private lateinit var phoneEmailInput: EditText
-    private lateinit var passwordInput: EditText
-
-    private lateinit var nameInput: EditText
-    private lateinit var universityInput: EditText
-    private lateinit var deptInput: EditText
-    private lateinit var yearInput: Spinner
-    private lateinit var genderInput: Spinner
-    private lateinit var addressInput: EditText
-    private lateinit var phoneInput: EditText
-    private lateinit var emailInput: EditText
-    private lateinit var experienceInput: EditText
-    private lateinit var expectedArea: EditText
-
-
-
+    var UserId=""
+    var UserType=""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_terms_and_conditions)
 
-        getValues()
-
-
     }
 
-    private fun bindWidgets() {
-        nameInput=findViewById(R.id.tutor_name_input)
-        universityInput=findViewById(R.id.tutor_university_input)
-        deptInput=findViewById(R.id.tutor_dept_input)
-        yearInput=findViewById(R.id.tutor_year_input)
-        genderInput=findViewById(R.id.tutor_gender_input)
-        addressInput=findViewById(R.id.tutor_address_input)
-        phoneInput=findViewById(R.id.tutor_phone_input)
-        emailInput=findViewById(R.id.tutor_email_input)
-        experienceInput=findViewById(R.id.tutor_experience_input)
-        expectedArea=findViewById(R.id.tutor_expected_area)
-
-        phoneEmailInput=findViewById(R.id.email_phone_signup)
-        passwordInput=findViewById(R.id.password_signup)
-
-        rbTutor = findViewById (R.id.radioButton_tutor)
-        rbStudent = findViewById (R.id.radioButton_student)
-
-    }
 
     fun backToFirstPage(view: View) {
         startActivity(Intent(this,
@@ -72,8 +36,18 @@ class TermsAndConditions : Activity() {
     }
     fun okGoHomePage(view: View) {
         if(checkAgreement()){
-            startActivity(Intent(this,
-                    HomePage::class.java))
+            val progress = ProgressDialog(this).apply {
+                setTitle("Creating Your Account....")
+                setCancelable(false)
+                setCanceledOnTouchOutside(false)
+                show()
+            }
+           getValues()
+
+            val intent=Intent(this,HomePage::class.java)
+            intent.putExtra(emailPhone,UserId)
+            intent.putExtra(type,UserType)
+            startActivity(intent)
         }
         else{
             printToast()
@@ -92,11 +66,11 @@ class TermsAndConditions : Activity() {
     }
     fun getValues(){
         var s:String
-        s=intent.getStringExtra(type)
-        if(s=="Student")
+        UserType=intent.getStringExtra(type)
+        if(UserType=="Student")
         {
-            s=intent.getStringExtra(emailPhone)
-            val ref= FirebaseDatabase.getInstance().getReference("Student").child(s)
+            UserId=intent.getStringExtra(emailPhone)
+            val ref= FirebaseDatabase.getInstance().getReference("Student").child(UserId)
             s=intent.getStringExtra(password)
             ref.child("Password").setValue(s)
             s=intent.getStringExtra(NameStudent)
@@ -114,10 +88,10 @@ class TermsAndConditions : Activity() {
             s=intent.getStringExtra(PhoneStudent)
             ref.child("Phone").setValue(s)
         }
-        if(s=="Tutor")
+        if(UserType=="Tutor")
         {
-            s=intent.getStringExtra(emailPhone)
-            val ref= FirebaseDatabase.getInstance().getReference("Tutor").child(s)
+            UserId=intent.getStringExtra(emailPhone)
+            val ref= FirebaseDatabase.getInstance().getReference("Tutor").child(UserId)
             s=intent.getStringExtra(password)
             ref.child("Password").setValue(s)
             s=intent.getStringExtra(NameTutor)
@@ -132,16 +106,22 @@ class TermsAndConditions : Activity() {
             ref.child("Gender").setValue(s)
             s=intent.getStringExtra(AddressTutor)
             ref.child("Address").setValue(s)
-            s=intent.getStringExtra(PhoneTutor)
-            ref.child("Phone").setValue(s)
             s=intent.getStringExtra(EmailTutor)
             ref.child("Email").setValue(s)
-            s=intent.getStringExtra(ExpectedAreaTutor)
-            ref.child("Expected Area").setValue(s)
+            s=intent.getStringExtra(PhoneTutor)
+            ref.child("Phone").setValue(s)
             s=intent.getStringExtra(ExperienceTutor)
             ref.child("Experience").setValue(s)
+            s=intent.getStringExtra(ExpectedAreaTutor)
+            ref.child("Expected Area").setValue(s)
+
         }
 
+    }
+    fun printToast(s:String){
+
+        val toast = Toast.makeText(this, s, Toast.LENGTH_SHORT)
+        toast.show()
     }
 
 

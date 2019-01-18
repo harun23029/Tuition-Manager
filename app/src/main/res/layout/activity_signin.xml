@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mobile number or email address"
+            android:text="Phone Number"
             android:textSize="20dp"
             />
 
@@ -23,10 +23,11 @@
             android:id="@+id/email_phone_signin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="11"
             android:drawableLeft="@drawable/ic_contact_mail_black_24dp"
             android:background="@android:drawable/editbox_background"
             android:drawablePadding="10dp"
-            android:inputType="text" />
+            android:inputType="number" />
 
         <TextView
             android:layout_width="match_parent"
@@ -45,6 +46,27 @@
             android:drawablePadding="10dp"
             android:id="@+id/password_signin"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account Type"
+            android:textSize="20dp"/>
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/radioButton_tutor_signin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tutor"/>
+            <RadioButton
+                android:id="@+id/radioButton_student_signin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Student"/>
+        </RadioGroup>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

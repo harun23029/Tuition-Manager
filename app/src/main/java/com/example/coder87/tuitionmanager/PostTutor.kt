@@ -3,6 +3,7 @@ package com.example.coder87.tuitionmanager
 import java.io.Serializable
 
 data class PostTutor(
+        val id:String,
         val timePost: String,
         val typePost: String,
         val locationPost: String,

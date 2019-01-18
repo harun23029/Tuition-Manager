@@ -16,7 +16,6 @@ class FirstPage : Activity() {
         setContentView(R.layout.activity_firstpage)
     }
     fun signIn(view: View) {
-        saveToFirebase()
         startActivity(Intent(this,
                 SignIn::class.java))
     }
@@ -40,17 +39,5 @@ class FirstPage : Activity() {
         }
 
     }
-    fun saveToFirebase() {
-
-        val s:String
-        s="harun"
-        val ref= FirebaseDatabase.getInstance().reference
-        ref.child("Email").setValue(s).addOnCompleteListener{
-            Toast.makeText(applicationContext,"Saved", Toast.LENGTH_SHORT).show()
-        }
-
-
-    }
-
 
 }

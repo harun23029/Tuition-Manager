@@ -40,19 +40,19 @@ class SignerType : Activity() {
             {
                 val intent=Intent(this,SignUpTutor::class.java)
                 intent.putExtra(type,"Tutor")
-                intent.putExtra(emailPhone,email_phone_signup.text.toString())
-                intent.putExtra(password,password_signup.text.toString())
+                intent.putExtra(emailPhone,phoneInput.text.toString())
+                intent.putExtra(password,passwordInput.text.toString())
                 startActivity(intent)
             }
             else if (rbStudent.isChecked && validateInput())
             {
                 val intent=Intent(this, SignUpStudent::class.java)
                 intent.putExtra(type,"Student")
-                intent.putExtra(emailPhone,email_phone_signup.text.toString())
-                intent.putExtra(password,password_signup.text.toString())
+                intent.putExtra(emailPhone,phoneInput.text.toString())
+                intent.putExtra(password,passwordInput.text.toString())
                 startActivity(intent)
             }
-            else{
+            else if(rbTutor.isChecked==false && rbStudent.isChecked==false ){
                 printToast();
             }
 
@@ -67,12 +67,17 @@ class SignerType : Activity() {
     private fun validateInput(): Boolean {
         var allInputsValid = true
         bindWidgets()
-        if(phoneInput.text.isEmpty())
+        if(phoneInput.text.isEmpty()||phoneInput.text.toString().length<11)
         {
             showError(phoneInput,R.string.email_phone_messege)
             allInputsValid=false
         }
         if(passwordInput.text.isEmpty())
+        {
+            showError(passwordInput,R.string.password_messege)
+            allInputsValid=false
+        }
+        if(passwordInput.text.toString().length<6)
         {
             showError(passwordInput,R.string.password_messege)
             allInputsValid=false
@@ -90,6 +95,11 @@ class SignerType : Activity() {
     fun printToast(){
 
         val toast = Toast.makeText(this, "Please select an option",Toast.LENGTH_SHORT)
+        toast.show()
+    }
+    fun printToasts(s:String){
+
+        val toast = Toast.makeText(this, s, Toast.LENGTH_SHORT)
         toast.show()
     }
 

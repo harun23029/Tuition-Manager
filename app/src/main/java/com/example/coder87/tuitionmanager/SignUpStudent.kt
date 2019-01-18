@@ -1,16 +1,22 @@
 package com.example.coder87.tuitionmanager
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.app.RemoteInput
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.*
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_sign_up_student.*
 import java.io.IOException
+import java.util.logging.FileHandler
+
 const val NameStudent="name"
 const val SchoolStudent="school"
 const val AddressStudent="address"
@@ -28,6 +34,7 @@ class SignUpStudent : Activity() {
     private lateinit var sectionInput: Spinner
     private lateinit var genderInput: Spinner
     private lateinit var phoneInput: EditText
+
 
 
     private var imageview: ImageView? = null
@@ -105,10 +112,33 @@ class SignUpStudent : Activity() {
         if (data != null)
         {
             val contentURI = data!!.data
+            getValues()
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                 //saveImage(bitmap)
                 imageview!!.setImageBitmap(bitmap)
+
+                val progress = ProgressDialog(this).apply {
+                    setTitle("Uploading Picture....")
+                    setCancelable(false)
+                    setCanceledOnTouchOutside(false)
+                    show()
+                }
+
+                val firebaseStorage = FirebaseStorage.getInstance()
+                var value = 0.0
+                var storage = firebaseStorage.getReference().child("Student/"+ep+".jpg").putFile(contentURI)
+                        .addOnProgressListener { taskSnapshot ->
+                            value = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+                            Log.v("value","value=="+value)
+                            progress.setMessage("Uploaded.. " + value.toInt() + "%")
+                        }
+                        .addOnSuccessListener { taskSnapshot -> progress.dismiss()
+
+                        }
+                        .addOnFailureListener{
+                            exception -> exception.printStackTrace()
+                        }
             }
             catch (e: IOException)
             {

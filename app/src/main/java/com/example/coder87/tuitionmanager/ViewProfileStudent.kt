@@ -8,22 +8,56 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.profile_demo_student.view.*
 
 class ViewProfileStudent : Activity() {
 
     private var profileStudent=ArrayList<ProfileStudent>()
+    var signer=""
+    var sigenrId=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_profile_student)
+        getValues()
         retrieveProfileStudent()
         prepareProfileStudent()
     }
 
     private fun retrieveProfileStudent() {
-        // TODO: fetch card list from database/server
+
         profileStudent.clear()
-        profileStudent.add(ProfileStudent("Harun-or-Rashid","Dhaka College","12","Science","Male","441/1F west Sewrapara Mirpur,Dhaka.","01871445680"))
+        val firebaseStorage = FirebaseStorage.getInstance()
+        var propic = firebaseStorage.getReference().child("Student/"+sigenrId+".jpg").downloadUrl
+        //Glide.with(this@HomePage).asBitmap().load(propic).into(picture_profile_student)
+
+
+        var dataBase= FirebaseDatabase.getInstance().getReference(signer).child(sigenrId)
+        dataBase.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var name=p0.child("Name").getValue().toString()
+                var school=p0.child("School").getValue().toString()
+                var clas=p0.child("Class").getValue().toString()
+                var section=p0.child("Section").getValue().toString()
+                var gender=p0.child("Gender").getValue().toString()
+                var address=p0.child("Address").getValue().toString()
+                var phone=p0.child("Phone").getValue().toString()
+
+                profileStudent.add(ProfileStudent(name,school,clas,section,gender,address,phone))
+                prepareProfileStudent()
+
+
+            }
+
+        })
 
     }
     private fun prepareProfileStudent() {
@@ -32,7 +66,7 @@ class ViewProfileStudent : Activity() {
         cardsRecyclerView.adapter = ProfileStudentAdapter(profileStudent)
     }
 
-    inner class ProfileStudentAdapter(private val cards : ArrayList<ProfileStudent>) : RecyclerView.Adapter<ProfileStudentItemViewHolder>() {
+    inner class ProfileStudentAdapter(private val cards : java.util.ArrayList<ProfileStudent>) : RecyclerView.Adapter<ProfileStudentItemViewHolder>() {
 
         override fun getItemCount(): Int {
             return cards.size
@@ -60,13 +94,18 @@ class ViewProfileStudent : Activity() {
 
     class ProfileStudentItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val name: TextView =view.name_profile_student
-        val school: TextView =view.school_profile_student
-        val clas: TextView =view.class_profile_student
-        val section: TextView =view.section_profile_student
-        val gender: TextView =view.gender_profile_student
-        val address: TextView =view.address_profile_student
-        val phoneNo: TextView =view.phone_profile_student
+        val name: TextView=view.name_profile_student
+        val school: TextView=view.school_profile_student
+        val clas: TextView=view.class_profile_student
+        val section: TextView=view.section_profile_student
+        val gender: TextView=view.gender_profile_student
+        val address: TextView=view.address_profile_student
+        val phoneNo:TextView=view.phone_profile_student
 
     }
+    fun getValues(){
+        signer=intent.getStringExtra(type)
+        sigenrId=intent.getStringExtra(emailPhone)
+    }
+
 }

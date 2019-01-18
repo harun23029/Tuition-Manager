@@ -1,13 +1,16 @@
 package com.example.coder87.tuitionmanager
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
+import android.util.Log
 import android.view.View
 import android.widget.*
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import org.w3c.dom.Text
 import java.io.IOException
 const val NameTutor="name"
@@ -17,9 +20,9 @@ const val DeptTutor="class"
 const val YearTutor="section"
 const val GenderTutor="male"
 const val PhoneTutor="phone"
-const val EmailTutor=""
-const val ExperienceTutor=""
-const val ExpectedAreaTutor=""
+const val EmailTutor="harunducse23@gmail.com"
+const val ExperienceTutor="10 yr"
+const val ExpectedAreaTutor="mirpur"
 
 class SignUpTutor : Activity() {
     private lateinit var nameInput: EditText
@@ -33,7 +36,6 @@ class SignUpTutor : Activity() {
     private lateinit var experienceInput: EditText
     private lateinit var expectedArea: EditText
 
-    private lateinit var emailSigner:EditText
 
     private var imageview: ImageView? = null
     private var selectButton: Button? =null
@@ -119,11 +121,34 @@ class SignUpTutor : Activity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null)
         {
+            getValues()
             val contentURI = data!!.data
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                 //saveImage(bitmap)
                 imageview!!.setImageBitmap(bitmap)
+                val progress = ProgressDialog(this).apply {
+                    setTitle("Uploading Picture....")
+                    setCancelable(false)
+                    setCanceledOnTouchOutside(false)
+                    show()
+                }
+
+                val firebaseStorage = FirebaseStorage.getInstance()
+                var value = 0.0
+                var storage = firebaseStorage.getReference().child("Tutor/"+ep+".jpg").putFile(contentURI)
+                        .addOnProgressListener { taskSnapshot ->
+                            value = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+                            Log.v("value","value=="+value)
+                            progress.setMessage("Uploaded.. " + value.toInt() + "%")
+                        }
+                        .addOnSuccessListener { taskSnapshot -> progress.dismiss()
+
+                        }
+                        .addOnFailureListener{
+                            exception -> exception.printStackTrace()
+                        }
+
             }
             catch (e: IOException)
             {
@@ -137,6 +162,12 @@ class SignUpTutor : Activity() {
         ep=intent.getStringExtra(emailPhone)
         pass=intent.getStringExtra(password)
         tp=intent.getStringExtra(type)
+
+    }
+    fun printToast(s:String){
+
+        val toast = Toast.makeText(this, s, Toast.LENGTH_SHORT)
+        toast.show()
     }
 
 }

@@ -5,19 +5,34 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
+import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_home_page2.*
+import kotlinx.android.synthetic.main.notifications_demo_student.*
 import kotlinx.android.synthetic.main.notifications_demo_student.view.*
 import kotlinx.android.synthetic.main.notifications_demo_tutor.view.*
 import kotlinx.android.synthetic.main.post_demo_student.view.*
+import kotlinx.android.synthetic.main.post_demo_tutor.*
 import kotlinx.android.synthetic.main.post_demo_tutor.view.*
+import kotlinx.android.synthetic.main.profile_demo_student.*
 import kotlinx.android.synthetic.main.profile_demo_student.view.*
 import kotlinx.android.synthetic.main.profile_demo_teacher.view.*
+import java.text.SimpleDateFormat
+import java.time.temporal.ChronoUnit
+import java.util.*
 
 class HomePage : AppCompatActivity() {
     private lateinit var homePage: ScrollView
@@ -27,10 +42,15 @@ class HomePage : AppCompatActivity() {
     private lateinit var notificationsPageStudent:ScrollView
     private lateinit var mp: MediaPlayer
 
-    private lateinit var ppTutor:CircleImageView
+
+
+
+
 
     private var selectedSubmenu: Int=1
-    private  var signer:String="tutor"
+    private  var signer:String=""
+    private var sigenrId:String=""
+
 
     private var postsTutor=ArrayList<PostTutor>()
     private var postsStudent=ArrayList<PostStudent>()
@@ -46,11 +66,21 @@ class HomePage : AppCompatActivity() {
         profilePageStudent=findViewById(R.id.profile_page_student)
         notificationsPageTutor=findViewById(R.id.notifications_page_tutor)
         notificationsPageStudent=findViewById(R.id.notifications_page_student)
+
     }
      fun createPost(view: View)
     {
-        // CHeck who is the user student/tutor
-        startActivity(Intent(this,CreatePostTutor::class.java))
+        if(signer=="Tutor")
+        {
+            val intent=Intent(this,CreatePostTutor::class.java)
+            intent.putExtra(emailPhone,sigenrId)
+            startActivity(intent)
+        }
+        else if(signer=="Student"){
+            val intent=Intent(this,CreatePostTuition::class.java)
+            intent.putExtra(emailPhone,sigenrId)
+            startActivity(intent)
+        }
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -59,16 +89,14 @@ class HomePage : AppCompatActivity() {
                 homePage.visibility=View.INVISIBLE
                 notificationsPageTutor.visibility=View.INVISIBLE
                 notificationsPageStudent.visibility=View.INVISIBLE
-                if(signer=="tutor")
+                if(signer=="Tutor")
                 {
                     retrieveProfileTutor()
-                    prepareProfileTutor()
                     profilePageStudent.visibility=View.INVISIBLE
                     profilePageTutor.visibility=View.VISIBLE
                 }
                 else{
                     retrieveProfileStudent()
-                    prepareProfileStudent()
                     profilePageStudent.visibility=View.VISIBLE
                     profilePageTutor.visibility=View.INVISIBLE
                 }
@@ -84,11 +112,9 @@ class HomePage : AppCompatActivity() {
                 homePage.visibility= View.VISIBLE
                 if(selectedSubmenu==1){
                     retrievePostsStudent()
-                    prepareHomePagePostStudent()
                 }
                 else{
                     retrievepostsTutor()
-                    prepareHomePagePostTutor()
                 }
 
                 return@OnNavigationItemSelectedListener true
@@ -98,7 +124,7 @@ class HomePage : AppCompatActivity() {
                 homePage.visibility=View.INVISIBLE
                 profilePageTutor.visibility=View.INVISIBLE
                 profilePageStudent.visibility=View.INVISIBLE
-                if(signer=="tutor")
+                if(signer=="Tutor")
                 {
                     retrieveNotificationTutor()
                     prepareNotificationTutor()
@@ -120,6 +146,7 @@ class HomePage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page2)
+        getValues()
         bindWidgets()
         retrievepostsTutor()
         prepareHomePagePostTutor()
@@ -156,11 +183,41 @@ class HomePage : AppCompatActivity() {
 
     }
     private fun retrievepostsTutor() {
-        // TODO: fetch card list from database/server
-         postsTutor.clear()
-         postsTutor.add(PostTutor("Harun-or-Rashid posted 25 mins ago","Tuition Wanted","Mirpur-10,Sewrapara,Kazipara,Taltola","Class 9-12","Physics,Math,ICT","3 days per week","8000-1200 TK","0","0"))
-         postsTutor.add(PostTutor("Rajib Hossain posted 10 hour 25 mins ago","Tuition Wanted","Dhanmondi,Jigatole","Class 9-12","Chemistry,Biology","3 days per week","8000-1200 TK","0","0"))
-         postsTutor.add(PostTutor("Alamin Hossain posted  just now","Tuition Wanted","Farmgate,Tejgoan","Class 9-12","English,ICT","3 days per week","8000-1200 TK","0","0"))
+
+        postsTutor.clear()
+        var dataBase=FirebaseDatabase.getInstance().getReference("Tuition Wanted")
+        dataBase.addListenerForSingleValueEvent(object:ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                for(h in p0.children){
+                    var name=h.child("Name").getValue().toString()
+                    var location=h.child("Location").getValue().toString()
+                    var clas=h.child("Class").getValue().toString()
+                    var subject=h.child("Subjects").getValue().toString()
+                    var day=h.child("Days").getValue().toString()
+                    var salary=h.child("Salary").getValue().toString()
+                    var thumbsup=h.child("Thumbs Up").getValue().toString()
+                    var thumbsdown=h.child("Thumbs Down").getValue().toString()
+                    var phone=h.child("Phone").getValue().toString()
+                    val postdate=h.child("Date").getValue().toString()
+                    val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+                    val currentDate = sdf.format(Date())
+
+                    postsTutor.add(PostTutor(phone,name+"  posted 1h ago","Tuition Wanted",location,clas,subject,day,salary,thumbsup,thumbsdown))
+
+                }
+                prepareHomePagePostTutor()
+
+            }
+
+
+        })
+
+
     }
     private fun prepareHomePagePostTutor() {
         val cardsRecyclerView: RecyclerView = findViewById(R.id.home_page_post_holder)
@@ -192,6 +249,48 @@ class HomePage : AppCompatActivity() {
             holder.salaryPost.text = card.salaryPost
             holder.thumbUpPost.text=card.thumbUpPost
             holder.thumbDownPost.text=card.thumbDownPost
+
+            holder.thumbUpPost.setOnClickListener {
+                playSound()
+                val database=FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id)
+                database.addListenerForSingleValueEvent(object:ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        var thumbsUp=p0.child("Thumbs Up").getValue().toString()
+                        var like=thumbsUp.toInt()
+                        like++
+                        database.child("Thumbs Up").setValue(""+like+"")
+                        retrievepostsTutor()
+                    }
+
+                })
+            }
+            holder.thumbDownPost.setOnClickListener {
+                playSound()
+                val database=FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id)
+                database.addListenerForSingleValueEvent(object:ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        var thumbsUp=p0.child("Thumbs Down").getValue().toString()
+                        var like=thumbsUp.toInt()
+                        like++
+                        database.child("Thumbs Down").setValue(""+like+"")
+                        retrievepostsTutor()
+                    }
+
+                })
+            }
+
+
+            holder.viewProfile.setOnClickListener {
+                viewProfileTutor(card.id)
+            }
         }
     }
 
@@ -208,15 +307,51 @@ class HomePage : AppCompatActivity() {
         val thumbUpPost:TextView=view.post_thumbsup_tutor
         val thumbDownPost:TextView=view.post_thumbsdown_tutor
 
+        val viewProfile:CardView=view.view_profile_tutor
+
     }
 
 
     private fun retrievePostsStudent() {
-        // TODO: fetch card list from database/server
+
         postsStudent.clear()
-        postsStudent.add(PostStudent("Golam Mourshid posted 1h ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK","0","0"))
-        postsStudent.add(PostStudent("Golam Mourshid posted 2d ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK","0","0"))
-        postsStudent.add(PostStudent("Golam Mourshid posted 10 h ago","Tutor Wanted","Class 10","Physics,Math","Uttara","4 days per week","Preferable University of tutor: DU,BUET","8000TK","0","0"))
+
+
+        var dataBase=FirebaseDatabase.getInstance().getReference("Tutor Wanted")
+        dataBase.addListenerForSingleValueEvent(object:ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                for(h in p0.children){
+                    var name=h.child("Name").getValue().toString()
+                    var location=h.child("Location").getValue().toString()
+                    var clas=h.child("Class").getValue().toString()
+                    var subject=h.child("Subjects").getValue().toString()
+                    var day=h.child("Days").getValue().toString()
+                    var salary=h.child("Salary").getValue().toString()
+                    var university=h.child("University").getValue().toString()
+                    var thumbsup=h.child("Thumbs Up").getValue().toString()
+                    var thumbsdown=h.child("Thumbs Down").getValue().toString()
+                    var id=h.child("Phone").getValue().toString()
+                    val postdate=h.child("Date").getValue().toString()
+
+                    val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+                    val currentDate = sdf.format(Date())
+
+
+
+                    postsStudent.add(PostStudent(id,name+"  posted 1h ago","Tutor Wanted",clas,subject,location,day,university,salary,thumbsup,thumbsdown))
+                }
+                prepareHomePagePostStudent()
+
+            }
+
+
+        })
+
 
     }
     private fun prepareHomePagePostStudent() {
@@ -251,6 +386,46 @@ class HomePage : AppCompatActivity() {
             holder.thumbUpPost.text=card.thumbUpPost
             holder.thumbDownPost.text=card.thumbDownPost
 
+            holder.thumbUpPost.setOnClickListener {
+                playSound()
+                val database=FirebaseDatabase.getInstance().getReference("Tutor Wanted").child(card.id)
+                database.addListenerForSingleValueEvent(object:ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        var thumbsUp=p0.child("Thumbs Up").getValue().toString()
+                        var like=thumbsUp.toInt()
+                        like++
+                        database.child("Thumbs Up").setValue(""+like+"")
+                        retrievePostsStudent()
+                    }
+
+                })
+            }
+            holder.thumbDownPost.setOnClickListener {
+                playSound()
+                val database=FirebaseDatabase.getInstance().getReference("Tutor Wanted").child(card.id)
+                database.addListenerForSingleValueEvent(object:ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        var thumbsUp=p0.child("Thumbs Down").getValue().toString()
+                        var like=thumbsUp.toInt()
+                        like++
+                        database.child("Thumbs Down").setValue(""+like+"")
+                        retrievePostsStudent()
+                    }
+
+                })
+            }
+            holder.viewProfile.setOnClickListener {
+                viewProfileStudent(card.id)
+            }
+
         }
     }
 
@@ -266,10 +441,12 @@ class HomePage : AppCompatActivity() {
         val salaryPost: TextView=view.post_salary_student
         val universityPost:TextView=view.post_university_student
         val thumbUpPost:TextView=view.post_thumbsup_student
-        val thumbDownPost:TextView=view.post_thumbsup_student
+        val thumbDownPost:TextView=view.post_thumbsdown_student
+
+        val viewProfile:CardView=view.view_profile_student
     }
 
-    fun playSound(view: View) {
+    fun playSound() {
         mp = MediaPlayer.create (this, R.raw.like)
         mp.start()
     }
@@ -277,28 +454,64 @@ class HomePage : AppCompatActivity() {
             startActivity(Intent(this,
                     Map::class.java))
     }
-    fun viewProfileTutor(view: View){
-        startActivity(Intent(this,
-                ViewProfileTutor::class.java))
+    fun viewProfileTutor(posterId:String){
+        val intent=Intent(this,ViewProfileTutor::class.java)
+        intent.putExtra(emailPhone,posterId)
+        intent.putExtra(type,"Tutor")
+        startActivity(intent)
     }
-    fun viewProfileStudent(view: View){
-        startActivity(Intent(this,
-                ViewProfileStudent::class.java))
+    fun viewProfileStudent(posterId: String){
+        val intent=Intent(this,ViewProfileStudent::class.java)
+        intent.putExtra(emailPhone,posterId)
+        intent.putExtra(type,"Student")
+        startActivity(intent)
     }
-    fun viewPostTutor(view: View){
-        startActivity(Intent(this,
-                ViewPostTutor::class.java))
+    fun viewPostTutor(posterId: String){
+        val intent=Intent(this,ViewPostTutor::class.java)
+        intent.putExtra(emailPhone,posterId)
+        intent.putExtra(type,signer)
+        startActivity(Intent(intent))
     }
-    fun viewPostStudent(view: View){
-        startActivity(Intent(this,
-                ViewPostStudent::class.java))
+    fun viewPostStudent(posterId: String){
+        val intent=Intent(this,ViewPostStudent::class.java)
+        intent.putExtra(emailPhone,posterId)
+        intent.putExtra(type,signer)
+        startActivity(Intent(intent))
     }
+
 
 
     private fun retrieveProfileTutor() {
-        // TODO: fetch card list from database/server
         profileTutor.clear()
-        profileTutor.add(ProfileTutor("Harun-or-Rashid","University of Dhaka","CSE","3rd year","4 year experience","Male","441/1F west Sewrapara Mirpur,Dhaka.","01871445680","harunducse23rd@gmail.com"))
+        val firebaseStorage = FirebaseStorage.getInstance()
+        var propic = firebaseStorage.getReference().child("Tutor/"+sigenrId+".jpg").downloadUrl
+       // Glide.with(this@HomePage).asBitmap().load(propic).into(picture_profile_student)
+
+        var dataBase=FirebaseDatabase.getInstance().getReference(signer).child(sigenrId)
+        dataBase.addListenerForSingleValueEvent(object:ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var name=p0.child("Name").getValue().toString()
+                var university=p0.child("University").getValue().toString()
+                var dept=p0.child("Department").getValue().toString()
+                var year=p0.child("Year").getValue().toString()
+                var exp=p0.child("Experience").getValue().toString()
+                var gender=p0.child("Gender").getValue().toString()
+                var address=p0.child("Address").getValue().toString()
+                var phone=p0.child("Phone").getValue().toString()
+                var email=p0.child("Email").getValue().toString()
+
+                profileTutor.add(ProfileTutor(name,university,dept,year,exp,gender,address,phone,email))
+                prepareProfileTutor()
+
+
+            }
+
+        })
+
 
     }
     private fun prepareProfileTutor() {
@@ -331,6 +544,8 @@ class HomePage : AppCompatActivity() {
             holder.address.text = card.address
             holder.phoneNo.text=card.phoneNo
             holder.email.text=card.email
+
+
         }
     }
 
@@ -347,12 +562,40 @@ class HomePage : AppCompatActivity() {
         val phoneNo:TextView=view.phone_profile_tutor
         val email:TextView=view.email_profile_tutor
 
+
+
     }
 
     private fun retrieveProfileStudent() {
-        // TODO: fetch card list from database/server
+
         profileStudent.clear()
-        profileStudent.add(ProfileStudent("Harun-or-Rashid","Dhaka College","12","Science","Male","441/1F west Sewrapara Mirpur,Dhaka.","01871445680"))
+        val firebaseStorage = FirebaseStorage.getInstance()
+        var propic = firebaseStorage.getReference().child("Student/"+sigenrId+".jpg").downloadUrl
+        //Glide.with(this@HomePage).asBitmap().load(propic).into(picture_profile_student)
+
+
+        var dataBase=FirebaseDatabase.getInstance().getReference(signer).child(sigenrId)
+        dataBase.addListenerForSingleValueEvent(object:ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var name=p0.child("Name").getValue().toString()
+                var school=p0.child("School").getValue().toString()
+                var clas=p0.child("Class").getValue().toString()
+                var section=p0.child("Section").getValue().toString()
+                var gender=p0.child("Gender").getValue().toString()
+                var address=p0.child("Address").getValue().toString()
+                var phone=p0.child("Phone").getValue().toString()
+
+                profileStudent.add(ProfileStudent(name,school,clas,section,gender,address,phone))
+                prepareProfileStudent()
+
+
+            }
+
+        })
 
     }
     private fun prepareProfileStudent() {
@@ -401,11 +644,49 @@ class HomePage : AppCompatActivity() {
 
 
     private fun retrieveNotificationTutor() {
-        // TODO: fetch card list from database/server
         notificationTutor.clear()
-        notificationTutor.add(NotificationTutor("Posted by Alamin Hossain"))
-        notificationTutor.add(NotificationTutor("Posted by Harun Ujjaman Faisal"))
-        notificationTutor.add(NotificationTutor("Posted by Rajib Hossain"))
+
+
+        var dataBase=FirebaseDatabase.getInstance().getReference(signer).child(sigenrId)
+        dataBase.addListenerForSingleValueEvent(object:ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var expectedArea=p0.child("Expected Area").getValue().toString()
+                var database=FirebaseDatabase.getInstance().getReference("Tutor Wanted")
+                database.addListenerForSingleValueEvent(object :ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+
+
+                         for(h in p0.children){
+                             var address=h.child("Location").getValue().toString()
+                             var name=h.child("Name").getValue().toString()
+                             var id=h.child("Phone").getValue().toString()
+                             var st=StringTokenizer(expectedArea,",")
+                             while (st.hasMoreTokens()){
+                                 var s=st.nextToken()
+                                 if(s in address){
+                                     notificationTutor.add(NotificationTutor(id,"Posted by "+name))
+                                    break
+                                 }
+                             }
+                         }
+                        prepareNotificationTutor()
+
+                    }
+
+                })
+            }
+
+        })
+
+
 
     }
     private fun prepareNotificationTutor() {
@@ -430,6 +711,9 @@ class HomePage : AppCompatActivity() {
             val card = cards[position]
 
             holder.postedByTutor.text = card.postedByTutor
+            holder.notificationCard.setOnClickListener {
+                viewPostStudent(card.id)
+            }
 
         }
     }
@@ -438,17 +722,52 @@ class HomePage : AppCompatActivity() {
     class NotificationTutorItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val postedByTutor: TextView=view.notification_posted_by_tutor
+        val notificationCard:CardView=view.notification_card_tutor
     }
 
     private fun retrieveNotificationStudent() {
-        // TODO: fetch card list from database/server
         notificationStudent.clear()
-        notificationStudent.add(NotificationStudent("Posted by Harun Ujjaman Faisal"))
-        notificationStudent.add(NotificationStudent("Posted by Harun Ujjaman Faisal"))
-        notificationStudent.add(NotificationStudent("Posted by Harun Ujjaman Faisal"))
-        notificationStudent.add(NotificationStudent("Posted by Harun Ujjaman Faisal"))
-        notificationStudent.add(NotificationStudent("Posted by Harun Ujjaman Faisal"))
-        notificationStudent.add(NotificationStudent("Posted by Harun Ujjaman Faisal"))
+        var dataBase=FirebaseDatabase.getInstance().getReference(signer).child(sigenrId)
+        dataBase.addListenerForSingleValueEvent(object:ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var expectedArea=p0.child("Address").getValue().toString()
+                var database=FirebaseDatabase.getInstance().getReference("Tuition Wanted")
+                database.addListenerForSingleValueEvent(object :ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+
+
+                        for(h in p0.children){
+                            var address=h.child("Location").getValue().toString()
+                            var name=h.child("Name").getValue().toString()
+                            var id=h.child("Phone").getValue().toString()
+                            var st=StringTokenizer(address,",")
+                            while (st.hasMoreTokens()){
+                                var s=st.nextToken()
+                                if(s in expectedArea){
+                                    notificationStudent.add(NotificationStudent(id,"Posted by "+name))
+                                    break
+                                }
+
+                            }
+                        }
+                        prepareNotificationStudent()
+
+
+                    }
+
+                })
+            }
+
+        })
+
 
     }
     private fun prepareNotificationStudent() {
@@ -473,6 +792,10 @@ class HomePage : AppCompatActivity() {
             val card = cards[position]
 
             holder.postedByStudent.text = card.postedByStudent
+            holder.notificationCard.setOnClickListener {
+                viewPostTutor(card.id)
+            }
+
 
         }
     }
@@ -481,9 +804,20 @@ class HomePage : AppCompatActivity() {
     class NotificationStudentItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val postedByStudent: TextView=view.notification_posted_by_student
+        val notificationCard:CardView=view.notification_card_student
 
 
     }
+    fun getValues(){
+        signer=intent.getStringExtra(type)
+        sigenrId=intent.getStringExtra(emailPhone)
+    }
+    fun printToast(s:String){
+
+        val toast = Toast.makeText(this, s, Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
 
 
 
