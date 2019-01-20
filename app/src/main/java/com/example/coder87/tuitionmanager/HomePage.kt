@@ -3,6 +3,7 @@ package com.example.coder87.tuitionmanager
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.support.annotation.DrawableRes
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
@@ -33,7 +34,8 @@ import kotlinx.android.synthetic.main.profile_demo_teacher.view.*
 import java.text.SimpleDateFormat
 import java.time.temporal.ChronoUnit
 import java.util.*
-
+const val yourloc="email"
+const val stuloc="password"
 class HomePage : AppCompatActivity() {
     private lateinit var homePage: ScrollView
     private lateinit var profilePageTutor: ScrollView
@@ -207,7 +209,9 @@ class HomePage : AppCompatActivity() {
                     val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
                     val currentDate = sdf.format(Date())
 
-                    postsTutor.add(PostTutor(phone,name+"  posted 1h ago","Tuition Wanted",location,clas,subject,day,salary,thumbsup,thumbsdown))
+                    var time=getTime(currentDate,postdate)
+
+                    postsTutor.add(PostTutor(phone,name+"  posted "+time,"Tuition Wanted",location,clas,subject,day,salary,thumbsup,thumbsdown))
 
                 }
                 prepareHomePagePostTutor()
@@ -341,9 +345,9 @@ class HomePage : AppCompatActivity() {
                     val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
                     val currentDate = sdf.format(Date())
 
+                    var time=getTime(currentDate,postdate)
 
-
-                    postsStudent.add(PostStudent(id,name+"  posted 1h ago","Tutor Wanted",clas,subject,location,day,university,salary,thumbsup,thumbsdown))
+                    postsStudent.add(PostStudent(id,name+"  posted "+time,"Tutor Wanted",clas,subject,location,day,university,salary,thumbsup,thumbsdown))
                 }
                 prepareHomePagePostStudent()
 
@@ -425,6 +429,22 @@ class HomePage : AppCompatActivity() {
             holder.viewProfile.setOnClickListener {
                 viewProfileStudent(card.id)
             }
+            holder.viewMap.setOnClickListener {
+                val database=FirebaseDatabase.getInstance().getReference(signer).child(sigenrId)
+                database.addListenerForSingleValueEvent(object:ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        var loc=p0.child("Address").getValue().toString()
+                        openMap(loc,card.locationPost)
+
+                    }
+
+                })
+
+            }
 
         }
     }
@@ -444,15 +464,19 @@ class HomePage : AppCompatActivity() {
         val thumbDownPost:TextView=view.post_thumbsdown_student
 
         val viewProfile:CardView=view.view_profile_student
+        val viewMap:CardView=view.view_map_home
     }
 
     fun playSound() {
         mp = MediaPlayer.create (this, R.raw.like)
         mp.start()
     }
-    fun openMap(view: View){
-            startActivity(Intent(this,
-                    Map::class.java))
+    fun openMap(yourLocation:String,studentLocation:String){
+        val intent=Intent(this,Map::class.java)
+        intent.putExtra(yourloc,yourLocation)
+        intent.putExtra(stuloc,studentLocation)
+
+        startActivity(intent)
     }
     fun viewProfileTutor(posterId:String){
         val intent=Intent(this,ViewProfileTutor::class.java)
@@ -483,10 +507,6 @@ class HomePage : AppCompatActivity() {
 
     private fun retrieveProfileTutor() {
         profileTutor.clear()
-        val firebaseStorage = FirebaseStorage.getInstance()
-        var propic = firebaseStorage.getReference().child("Tutor/"+sigenrId+".jpg").downloadUrl
-       // Glide.with(this@HomePage).asBitmap().load(propic).into(picture_profile_student)
-
         var dataBase=FirebaseDatabase.getInstance().getReference(signer).child(sigenrId)
         dataBase.addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
@@ -545,6 +565,11 @@ class HomePage : AppCompatActivity() {
             holder.phoneNo.text=card.phoneNo
             holder.email.text=card.email
 
+            val firebaseStorage = FirebaseStorage.getInstance()
+            var propic = firebaseStorage.getReference().child("Tutor/"+sigenrId+".jpg")
+            //Glide.with(this@HomePage).asBitmap().load(propic).into(holder.pp)
+            //GlideApp.with(this).load(propic).into(holder.pp)
+            printToast(propic.toString())
 
         }
     }
@@ -561,6 +586,8 @@ class HomePage : AppCompatActivity() {
         val address: TextView=view.address_profile_tutor
         val phoneNo:TextView=view.phone_profile_tutor
         val email:TextView=view.email_profile_tutor
+
+        val pp:CircleImageView=view.picture_profile_tutor
 
 
 
@@ -818,7 +845,74 @@ class HomePage : AppCompatActivity() {
         toast.show()
     }
 
+    fun getTime(curr:String,post:String):String{
+        var st=StringTokenizer(curr," ")
+        var cdate=st.nextToken()
+        var st2=StringTokenizer(post," ")
+        var pdate=st2.nextToken()
+        var st3=StringTokenizer(cdate,"/")
+        var st4=StringTokenizer(pdate,"/")
+        var cday=st3.nextToken().toInt()
+        var pday=st4.nextToken().toInt()
+        var cmonth=st3.nextToken().toInt()
+        var pmonth=st4.nextToken().toInt()
+        var cyear=st3.nextToken().toInt()
+        var pyear=st4.nextToken().toInt()
 
+        var day=1
+        var month=1
+        var year=1
+
+        if(cday>=pday&&cmonth>=pmonth&&cyear>=pyear){
+            day=cday-pday
+            month=cmonth-pmonth
+            year=cyear-pyear
+        }
+        else{
+            if(cyear>pyear){
+                if (cmonth >= pmonth) {
+                    if (cday < pday) {
+                        year = cyear - pyear;
+                        month = cmonth - pmonth - 1;
+                        day = 31 - pday + cday;
+                    }
+                }
+                else{
+                    if (cmonth < pmonth) {
+                        if (cday > pday) {
+                            year = cyear - pyear - 1;
+                            month = 12 - pmonth + cmonth;
+                            day = cday - pday;
+                        }
+                        else
+                            if (pday > cday) {
+                                year = cyear - pyear - 1;
+                                month = 12 - pmonth + cmonth - 1;
+                                day = 31 - pday + cday;
+                            }
+                    }
+                }
+            }
+        }
+        var date=""
+        if(year>0){
+
+            date=year.toString()+"y ago"
+
+        }
+        else if(month>0){
+            date=month.toString()+"m ago"
+
+        }
+        else{
+            if(day==0)
+                date="today"
+            else
+                date=day.toString()+"d ago"
+        }
+
+        return date
+    }
 
 
 

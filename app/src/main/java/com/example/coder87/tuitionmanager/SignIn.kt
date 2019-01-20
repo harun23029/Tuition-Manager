@@ -123,6 +123,10 @@ class SignIn : Activity() {
             showError(passwordInput,R.string.password_messege)
             allInputsValid=false
         }
+        if(rbTutor.isChecked==false&&rbStudent.isChecked==false){
+            printToast("Please select account type")
+            allInputsValid=false
+        }
         return allInputsValid
     }
     private fun showError(field: EditText, messageRes: Int) {

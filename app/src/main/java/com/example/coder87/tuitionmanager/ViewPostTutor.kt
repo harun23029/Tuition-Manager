@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -57,7 +58,9 @@ class ViewPostTutor : Activity() {
                     val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
                     val currentDate = sdf.format(Date())
 
-                    postsTutor.add(PostTutor(phone,name+"  posted 1h ago","Tuition Wanted",location,clas,subject,day,salary,thumbsup,thumbsdown))
+                    var time=getTime(currentDate,postdate)
+
+                    postsTutor.add(PostTutor(phone,name+"  posted "+time,"Tuition Wanted",location,clas,subject,day,salary,thumbsup,thumbsdown))
 
                 }
                 prepareHomePagePostTutor()
@@ -171,6 +174,79 @@ class ViewPostTutor : Activity() {
     fun getValues(){
         signer=intent.getStringExtra(type)
         sigenrId=intent.getStringExtra(emailPhone)
+    }
+    fun getTime(curr:String,post:String):String{
+        var st=StringTokenizer(curr," ")
+        var cdate=st.nextToken()
+        var st2=StringTokenizer(post," ")
+        var pdate=st2.nextToken()
+        var st3=StringTokenizer(cdate,"/")
+        var st4=StringTokenizer(pdate,"/")
+        var cday=st3.nextToken().toInt()
+        var pday=st4.nextToken().toInt()
+        var cmonth=st3.nextToken().toInt()
+        var pmonth=st4.nextToken().toInt()
+        var cyear=st3.nextToken().toInt()
+        var pyear=st4.nextToken().toInt()
+
+        var day=1
+        var month=1
+        var year=1
+
+        if(cday>=pday&&cmonth>=pmonth&&cyear>=pyear){
+            day=cday-pday
+            month=cmonth-pmonth
+            year=cyear-pyear
+        }
+        else{
+            if(cyear>pyear){
+                if (cmonth >= pmonth) {
+                    if (cday < pday) {
+                        year = cyear - pyear;
+                        month = cmonth - pmonth - 1;
+                        day = 31 - pday + cday;
+                    }
+                }
+                else{
+                    if (cmonth < pmonth) {
+                        if (cday > pday) {
+                            year = cyear - pyear - 1;
+                            month = 12 - pmonth + cmonth;
+                            day = cday - pday;
+                        }
+                        else
+                            if (pday > cday) {
+                                year = cyear - pyear - 1;
+                                month = 12 - pmonth + cmonth - 1;
+                                day = 31 - pday + cday;
+                            }
+                    }
+                }
+            }
+        }
+        var date=""
+        if(year>0){
+
+            date=year.toString()+"y ago"
+
+        }
+        else if(month>0){
+            date=month.toString()+"m ago"
+
+        }
+        else{
+            if(day==0)
+                date="today"
+            else
+                date=day.toString()+"d ago"
+        }
+
+        return date
+    }
+    fun printToast(s:String){
+
+        val toast = Toast.makeText(this, s, Toast.LENGTH_SHORT)
+        toast.show()
     }
 
 }

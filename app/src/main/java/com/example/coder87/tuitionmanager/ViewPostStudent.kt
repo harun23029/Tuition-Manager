@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -60,9 +61,9 @@ class ViewPostStudent : Activity() {
                     val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
                     val currentDate = sdf.format(Date())
 
+                    var time=getTime(currentDate,postdate)
 
-
-                    postsStudent.add(PostStudent(id,name+"  posted 1h ago","Tutor Wanted",clas,subject,location,day,university,salary,thumbsup,thumbsdown))
+                    postsStudent.add(PostStudent(id,name+"  posted "+time,"Tutor Wanted",clas,subject,location,day,university,salary,thumbsup,thumbsdown))
                 }
                 prepareHomePagePostStudent()
 
@@ -144,6 +145,23 @@ class ViewPostStudent : Activity() {
             holder.viewProfile.setOnClickListener {
                 viewProfileStudent(card.id)
             }
+            holder.viewMap.setOnClickListener {
+                val database=FirebaseDatabase.getInstance().getReference(signer).child(sigenrId)
+                database.addListenerForSingleValueEvent(object:ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        var loc=p0.child("Address").getValue().toString()
+                        openMap(loc,card.locationPost)
+
+                    }
+
+                })
+
+            }
+
 
         }
     }
@@ -163,15 +181,19 @@ class ViewPostStudent : Activity() {
         val thumbDownPost:TextView=view.post_thumbsdown_student
 
         val viewProfile: CardView =view.view_profile_student
+        val viewMap:CardView=view.view_map_home
     }
 
     fun playSound() {
         mp = MediaPlayer.create (this, R.raw.like)
         mp.start()
     }
-    fun openMap(view: View){
-        startActivity(Intent(this,
-                Map::class.java))
+    fun openMap(yourLocation:String,studentLocation:String){
+        val intent=Intent(this,Map::class.java)
+        intent.putExtra(yourloc,yourLocation)
+        intent.putExtra(stuloc,studentLocation)
+
+        startActivity(intent)
     }
     fun viewProfileStudent(posterId: String){
         val intent=Intent(this,ViewProfileStudent::class.java)
@@ -182,5 +204,78 @@ class ViewPostStudent : Activity() {
     fun getValues(){
         signer=intent.getStringExtra(type)
         sigenrId=intent.getStringExtra(emailPhone)
+    }
+    fun getTime(curr:String,post:String):String{
+        var st=StringTokenizer(curr," ")
+        var cdate=st.nextToken()
+        var st2=StringTokenizer(post," ")
+        var pdate=st2.nextToken()
+        var st3=StringTokenizer(cdate,"/")
+        var st4=StringTokenizer(pdate,"/")
+        var cday=st3.nextToken().toInt()
+        var pday=st4.nextToken().toInt()
+        var cmonth=st3.nextToken().toInt()
+        var pmonth=st4.nextToken().toInt()
+        var cyear=st3.nextToken().toInt()
+        var pyear=st4.nextToken().toInt()
+
+        var day=1
+        var month=1
+        var year=1
+
+        if(cday>=pday&&cmonth>=pmonth&&cyear>=pyear){
+            day=cday-pday
+            month=cmonth-pmonth
+            year=cyear-pyear
+        }
+        else{
+            if(cyear>pyear){
+                if (cmonth >= pmonth) {
+                    if (cday < pday) {
+                        year = cyear - pyear;
+                        month = cmonth - pmonth - 1;
+                        day = 31 - pday + cday;
+                    }
+                }
+                else{
+                    if (cmonth < pmonth) {
+                        if (cday > pday) {
+                            year = cyear - pyear - 1;
+                            month = 12 - pmonth + cmonth;
+                            day = cday - pday;
+                        }
+                        else
+                            if (pday > cday) {
+                                year = cyear - pyear - 1;
+                                month = 12 - pmonth + cmonth - 1;
+                                day = 31 - pday + cday;
+                            }
+                    }
+                }
+            }
+        }
+        var date=""
+        if(year>0){
+
+            date=year.toString()+"y ago"
+
+        }
+        else if(month>0){
+            date=month.toString()+"m ago"
+
+        }
+        else{
+            if(day==0)
+                date="today"
+            else
+                date=day.toString()+"d ago"
+        }
+
+        return date
+    }
+    fun printToast(s:String){
+
+        val toast = Toast.makeText(this, s, Toast.LENGTH_SHORT)
+        toast.show()
     }
 }

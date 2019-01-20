@@ -14,10 +14,10 @@
         android:title="filter by">
         <menu>
             <item
-                android:title="Tuition"
+                android:title="Tutor Wanted"
                 android:id="@+id/submenu_tuition"/>
             <item
-                android:title="Tutor"
+                android:title="Tuition Wanted"
                 android:id="@+id/submenu_tutor"/>
         </menu>
     </item>
