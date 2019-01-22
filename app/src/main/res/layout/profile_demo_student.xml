@@ -27,7 +27,6 @@
                         android:id="@+id/picture_profile_student"
                         android:layout_width="250dp"
                         android:layout_height="250dp"
-                        android:src="@drawable/harun"
                         android:layout_marginBottom="10dp"
                         android:layout_gravity="bottom"
                         app:civ_border_width="5dp"

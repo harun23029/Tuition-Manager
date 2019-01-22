@@ -48,7 +48,7 @@ class SignUpTutor : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_tutor)
-
+        getValues()
         selectButton=findViewById(R.id.select_pp__tutor) as Button
         imageview = findViewById(R.id.pp_tutor) as ImageView
         selectButton!!.setOnClickListener{ chooseImageFromGallery() }
@@ -136,14 +136,19 @@ class SignUpTutor : Activity() {
 
                 val firebaseStorage = FirebaseStorage.getInstance()
                 var value = 0.0
-                var storage = firebaseStorage.getReference().child("Tutor/"+ep+".jpg").putFile(contentURI)
+                var storage = firebaseStorage.getReference().child("Tutor/"+ep+".jpg")
+                        storage.putFile(contentURI)
                         .addOnProgressListener { taskSnapshot ->
                             value = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
                             Log.v("value","value=="+value)
                             progress.setMessage("Uploaded.. " + value.toInt() + "%")
                         }
                         .addOnSuccessListener { taskSnapshot -> progress.dismiss()
-
+                            storage.downloadUrl.addOnCompleteListener(){taskSnapshot->
+                                var url = taskSnapshot.result.toString()
+                                val ref= FirebaseDatabase.getInstance().getReference("Tutor").child(ep)
+                                ref.child("Profile Picture").setValue(url)
+                            }
                         }
                         .addOnFailureListener{
                             exception -> exception.printStackTrace()

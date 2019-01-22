@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.profile_demo_teacher.view.*
 
 class ViewProfileTutor : Activity() {
@@ -91,6 +92,20 @@ class ViewProfileTutor : Activity() {
             holder.address.text = card.address
             holder.phoneNo.text=card.phoneNo
             holder.email.text=card.email
+
+            val firebase = FirebaseDatabase.getInstance().getReference("Tutor").child(sigenrId)
+            firebase.addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    var url=p0.child("Profile Picture").getValue().toString()
+                    GlideApp.with(this@ViewProfileTutor).load(url).into(holder.pp);
+
+                }
+
+            })
         }
     }
 
@@ -106,6 +121,7 @@ class ViewProfileTutor : Activity() {
         val address: TextView =view.address_profile_tutor
         val phoneNo: TextView =view.phone_profile_tutor
         val email: TextView =view.email_profile_tutor
+        val pp:CircleImageView=view.picture_profile_tutor
 
     }
     fun getValues(){

@@ -24,6 +24,7 @@ const val ClassStudent="class"
 const val SectionStudent="section"
 const val GenderStudent="male"
 const val PhoneStudent="phone"
+const val pp="https"
 
 class SignUpStudent : Activity() {
 
@@ -48,6 +49,7 @@ class SignUpStudent : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_student)
+        getValues()
         selectButton=findViewById(R.id.select_pp__student) as Button
         imageview = findViewById(R.id.pp_student) as ImageView
 
@@ -127,13 +129,20 @@ class SignUpStudent : Activity() {
 
                 val firebaseStorage = FirebaseStorage.getInstance()
                 var value = 0.0
-                var storage = firebaseStorage.getReference().child("Student/"+ep+".jpg").putFile(contentURI)
+                var storage = firebaseStorage.getReference().child("Student/"+ep+".jpg")
+                storage.putFile(contentURI)
                         .addOnProgressListener { taskSnapshot ->
                             value = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
                             Log.v("value","value=="+value)
                             progress.setMessage("Uploaded.. " + value.toInt() + "%")
                         }
-                        .addOnSuccessListener { taskSnapshot -> progress.dismiss()
+                        .addOnSuccessListener { taskSnapshot ->progress.dismiss()
+                            storage.downloadUrl.addOnCompleteListener(){taskSnapshot->
+                                var url = taskSnapshot.result.toString()
+                                val ref= FirebaseDatabase.getInstance().getReference("Student").child(ep)
+                                ref.child("Profile Picture").setValue(url)
+                            }
+
 
                         }
                         .addOnFailureListener{
@@ -153,7 +162,11 @@ class SignUpStudent : Activity() {
         tp=intent.getStringExtra(type)
     }
 
+    fun printToast(s:String){
 
+        val toast = Toast.makeText(this, s, Toast.LENGTH_SHORT)
+        toast.show()
+    }
 
 
 

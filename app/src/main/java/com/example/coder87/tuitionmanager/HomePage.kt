@@ -1,6 +1,7 @@
 package com.example.coder87.tuitionmanager
 
 import android.content.Intent
+import android.hardware.ConsumerIrManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.annotation.DrawableRes
@@ -253,7 +254,19 @@ class HomePage : AppCompatActivity() {
             holder.salaryPost.text = card.salaryPost
             holder.thumbUpPost.text=card.thumbUpPost
             holder.thumbDownPost.text=card.thumbDownPost
+            val firebase = FirebaseDatabase.getInstance().getReference("Tutor").child(card.id)
+            firebase.addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
 
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    var url=p0.child("Profile Picture").getValue().toString()
+                    GlideApp.with(this@HomePage).load(url).into(holder.pp);
+
+                }
+
+            })
             holder.thumbUpPost.setOnClickListener {
                 playSound()
                 val database=FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id)
@@ -312,6 +325,7 @@ class HomePage : AppCompatActivity() {
         val thumbDownPost:TextView=view.post_thumbsdown_tutor
 
         val viewProfile:CardView=view.view_profile_tutor
+        val pp:CircleImageView=view.profile_image_tutor
 
     }
 
@@ -389,6 +403,19 @@ class HomePage : AppCompatActivity() {
             holder.universityPost.text=card.universityPost
             holder.thumbUpPost.text=card.thumbUpPost
             holder.thumbDownPost.text=card.thumbDownPost
+            val firebase = FirebaseDatabase.getInstance().getReference("Student").child(card.id)
+            firebase.addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    var url=p0.child("Profile Picture").getValue().toString()
+                    GlideApp.with(this@HomePage).load(url).into(holder.pp);
+
+                }
+
+            })
 
             holder.thumbUpPost.setOnClickListener {
                 playSound()
@@ -465,6 +492,7 @@ class HomePage : AppCompatActivity() {
 
         val viewProfile:CardView=view.view_profile_student
         val viewMap:CardView=view.view_map_home
+        val pp:CircleImageView=view.profile_image_student
     }
 
     fun playSound() {
@@ -564,12 +592,20 @@ class HomePage : AppCompatActivity() {
             holder.address.text = card.address
             holder.phoneNo.text=card.phoneNo
             holder.email.text=card.email
+            val firebase = FirebaseDatabase.getInstance().getReference("Tutor").child(sigenrId)
+            firebase.addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
 
-            val firebaseStorage = FirebaseStorage.getInstance()
-            var propic = firebaseStorage.getReference().child("Tutor/"+sigenrId+".jpg")
-            //Glide.with(this@HomePage).asBitmap().load(propic).into(holder.pp)
-            //GlideApp.with(this).load(propic).into(holder.pp)
-            printToast(propic.toString())
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    var url=p0.child("Profile Picture").getValue().toString()
+                    GlideApp.with(this@HomePage).load(url).into(holder.pp);
+
+                }
+
+            })
+
 
         }
     }
@@ -596,10 +632,6 @@ class HomePage : AppCompatActivity() {
     private fun retrieveProfileStudent() {
 
         profileStudent.clear()
-        val firebaseStorage = FirebaseStorage.getInstance()
-        var propic = firebaseStorage.getReference().child("Student/"+sigenrId+".jpg").downloadUrl
-        //Glide.with(this@HomePage).asBitmap().load(propic).into(picture_profile_student)
-
 
         var dataBase=FirebaseDatabase.getInstance().getReference(signer).child(sigenrId)
         dataBase.addListenerForSingleValueEvent(object:ValueEventListener{
@@ -653,6 +685,20 @@ class HomePage : AppCompatActivity() {
             holder.gender.text = card.gender
             holder.address.text = card.address
             holder.phoneNo.text=card.phoneNo
+
+            val firebase = FirebaseDatabase.getInstance().getReference("Student").child(sigenrId)
+            firebase.addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    var url=p0.child("Profile Picture").getValue().toString()
+                    GlideApp.with(this@HomePage).load(url).into(holder.pp);
+
+                }
+
+            })
         }
     }
 
@@ -666,6 +712,7 @@ class HomePage : AppCompatActivity() {
         val gender: TextView=view.gender_profile_student
         val address: TextView=view.address_profile_student
         val phoneNo:TextView=view.phone_profile_student
+        val pp:CircleImageView=view.picture_profile_student
 
     }
 
@@ -737,6 +784,19 @@ class HomePage : AppCompatActivity() {
         override fun onBindViewHolder(holder: NotificationTutorItemViewHolder, position: Int) {
             val card = cards[position]
 
+            val firebase = FirebaseDatabase.getInstance().getReference("Student").child(card.id)
+            firebase.addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    var url=p0.child("Profile Picture").getValue().toString()
+                    GlideApp.with(this@HomePage).load(url).into(holder.pp);
+
+                }
+
+            })
             holder.postedByTutor.text = card.postedByTutor
             holder.notificationCard.setOnClickListener {
                 viewPostStudent(card.id)
@@ -750,6 +810,7 @@ class HomePage : AppCompatActivity() {
 
         val postedByTutor: TextView=view.notification_posted_by_tutor
         val notificationCard:CardView=view.notification_card_tutor
+        val pp:CircleImageView=view.profile_image_tutor_nt
     }
 
     private fun retrieveNotificationStudent() {
@@ -818,6 +879,19 @@ class HomePage : AppCompatActivity() {
         override fun onBindViewHolder(holder: NotificationStudentItemViewHolder, position: Int) {
             val card = cards[position]
 
+            val firebase = FirebaseDatabase.getInstance().getReference("Tutor").child(sigenrId)
+            firebase.addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    var url=p0.child("Profile Picture").getValue().toString()
+                    GlideApp.with(this@HomePage).load(url).into(holder.pp);
+
+                }
+
+            })
             holder.postedByStudent.text = card.postedByStudent
             holder.notificationCard.setOnClickListener {
                 viewPostTutor(card.id)
@@ -832,6 +906,7 @@ class HomePage : AppCompatActivity() {
 
         val postedByStudent: TextView=view.notification_posted_by_student
         val notificationCard:CardView=view.notification_card_student
+        val pp:CircleImageView=view.profile_image_student_nt
 
 
     }
