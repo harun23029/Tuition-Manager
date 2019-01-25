@@ -16,6 +16,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
@@ -43,6 +44,11 @@
                 android:layout_marginLeft="5dp"
                 android:text="Department of Computer Science and Engineering"
                 android:textSize="15dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="Email: harunducse23rd@gmail.com"/>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -71,6 +77,12 @@
                 android:layout_marginLeft="5dp"
                 android:text="Department of Computer Science and Engineering"
                 android:textSize="15dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="Email: alaminhossain8936du@gmail.com"/>
+
 
             <ImageView
                 android:layout_width="match_parent"
@@ -99,6 +111,12 @@
                 android:layout_marginLeft="5dp"
                 android:text="Department of Computer Science and Engineering"
                 android:textSize="15dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="Email: cserajib17@gmail.com"/>
+
         </LinearLayout>
 
     </ScrollView>

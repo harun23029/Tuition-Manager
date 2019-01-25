@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.app.RemoteInput
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -50,6 +51,7 @@ class SignUpStudent : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_student)
         getValues()
+        setDefaultProfilePicture()
         selectButton=findViewById(R.id.select_pp__student) as Button
         imageview = findViewById(R.id.pp_student) as ImageView
 
@@ -82,6 +84,7 @@ class SignUpStudent : Activity() {
             intent.putExtra(GenderStudent,genderInput.selectedItem.toString())
             intent.putExtra(PhoneStudent,phoneInput.text.toString())
             startActivity(intent)
+            finish()
         }
     }
     private fun validateInput(): Boolean {
@@ -156,6 +159,26 @@ class SignUpStudent : Activity() {
         }
 
     }
+    private fun setDefaultProfilePicture(){
+        val contentURI = Uri.parse("android.resource://" + this.getPackageName() + "/drawable/pp")
+        val firebaseStorage = FirebaseStorage.getInstance()
+        var storage = firebaseStorage.getReference().child("Student/"+ep+".jpg")
+        storage.putFile(contentURI)
+                .addOnProgressListener { taskSnapshot ->
+
+                }
+                .addOnSuccessListener { taskSnapshot ->
+                    storage.downloadUrl.addOnCompleteListener(){taskSnapshot->
+                        var url = taskSnapshot.result.toString()
+                        val ref= FirebaseDatabase.getInstance().getReference("Student").child(ep)
+                        ref.child("Profile Picture").setValue(url)
+                    }
+                }
+                .addOnFailureListener{
+                    exception -> exception.printStackTrace()
+                }
+    }
+
     fun getValues(){
         ep=intent.getStringExtra(emailPhone)
         pass=intent.getStringExtra(password)
@@ -166,6 +189,12 @@ class SignUpStudent : Activity() {
 
         val toast = Toast.makeText(this, s, Toast.LENGTH_SHORT)
         toast.show()
+    }
+    override fun onBackPressed() {
+
+        finish()
+        val intent = Intent(this,FirstPage::class.java)
+        startActivity(intent)
     }
 
 

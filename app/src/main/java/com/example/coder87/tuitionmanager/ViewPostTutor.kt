@@ -1,6 +1,7 @@
 package com.example.coder87.tuitionmanager
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.post_demo_tutor.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,7 +38,7 @@ class ViewPostTutor : Activity() {
     private fun retrievepostsTutor() {
 
         postsTutor.clear()
-        var dataBase= FirebaseDatabase.getInstance().getReference("Tuition Wanted")
+        var dataBase= FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(sigenrId)
         dataBase.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
@@ -44,17 +46,16 @@ class ViewPostTutor : Activity() {
 
             override fun onDataChange(p0: DataSnapshot) {
 
-                for(h in p0.children){
-                    var name=h.child("Name").getValue().toString()
-                    var location=h.child("Location").getValue().toString()
-                    var clas=h.child("Class").getValue().toString()
-                    var subject=h.child("Subjects").getValue().toString()
-                    var day=h.child("Days").getValue().toString()
-                    var salary=h.child("Salary").getValue().toString()
-                    var thumbsup=h.child("Thumbs Up").getValue().toString()
-                    var thumbsdown=h.child("Thumbs Down").getValue().toString()
-                    var phone=h.child("Phone").getValue().toString()
-                    val postdate=h.child("Date").getValue().toString()
+                    var name=p0.child("Name").getValue().toString()
+                    var location=p0.child("Location").getValue().toString()
+                    var clas=p0.child("Class").getValue().toString()
+                    var subject=p0.child("Subjects").getValue().toString()
+                    var day=p0.child("Days").getValue().toString()
+                    var salary=p0.child("Salary").getValue().toString()
+                    var thumbsup=p0.child("Thumbs Up").getValue().toString()
+                    var thumbsdown=p0.child("Thumbs Down").getValue().toString()
+                    var phone=p0.child("Phone").getValue().toString()
+                    val postdate=p0.child("Date").getValue().toString()
                     val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
                     val currentDate = sdf.format(Date())
 
@@ -62,7 +63,6 @@ class ViewPostTutor : Activity() {
 
                     postsTutor.add(PostTutor(phone,name+"  posted "+time,"Tuition Wanted",location,clas,subject,day,salary,thumbsup,thumbsdown))
 
-                }
                 prepareHomePagePostTutor()
 
             }
@@ -102,6 +102,20 @@ class ViewPostTutor : Activity() {
             holder.salaryPost.text = card.salaryPost
             holder.thumbUpPost.text=card.thumbUpPost
             holder.thumbDownPost.text=card.thumbDownPost
+            holder.deleteButton.visibility=View.INVISIBLE
+            val firebase = FirebaseDatabase.getInstance().getReference("Tutor").child(card.id)
+            firebase.addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    var url=p0.child("Profile Picture").getValue().toString()
+                    GlideApp.with(this@ViewPostTutor).load(url).into(holder.pp);
+
+                }
+
+            })
 
             holder.thumbUpPost.setOnClickListener {
                 playSound()
@@ -142,6 +156,7 @@ class ViewPostTutor : Activity() {
             holder.viewProfile.setOnClickListener {
                 viewProfileTutor(card.id)
             }
+
         }
     }
 
@@ -159,6 +174,8 @@ class ViewPostTutor : Activity() {
         val thumbDownPost:TextView=view.post_thumbsdown_tutor
 
         val viewProfile: CardView =view.view_profile_tutor
+        val deleteButton:TextView=view.delete_button_post_tutor
+        val pp:CircleImageView=view.profile_image_tutor
 
     }
     fun viewProfileTutor(posterId:String){

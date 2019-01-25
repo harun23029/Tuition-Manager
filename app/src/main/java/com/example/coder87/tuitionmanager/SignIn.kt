@@ -149,8 +149,17 @@ class SignIn : Activity() {
         }
         intent.putExtra(emailPhone,phoneInput.text.toString())
         startActivity(intent)
+        finish()
     }
+    fun forgottenPassword(view: View){
+        startActivity(Intent(this,FindAccountToChangePassword::class.java))
+    }
+    override fun onBackPressed() {
 
+        finish()
+        val intent = Intent(this,FirstPage::class.java)
+        startActivity(intent)
+    }
 
 
 }

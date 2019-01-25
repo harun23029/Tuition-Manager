@@ -3,6 +3,7 @@ package com.example.coder87.tuitionmanager
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -49,6 +50,7 @@ class SignUpTutor : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_tutor)
         getValues()
+        setDefaultProfilePicture()
         selectButton=findViewById(R.id.select_pp__tutor) as Button
         imageview = findViewById(R.id.pp_tutor) as ImageView
         selectButton!!.setOnClickListener{ chooseImageFromGallery() }
@@ -88,6 +90,7 @@ class SignUpTutor : Activity() {
             intent.putExtra(ExperienceTutor,experienceInput.text.toString())
             intent.putExtra(ExpectedAreaTutor,expectedArea.text.toString())
             startActivity(intent)
+            finish()
         }
 
     }
@@ -162,6 +165,25 @@ class SignUpTutor : Activity() {
         }
 
     }
+    private fun setDefaultProfilePicture(){
+        val contentURI = Uri.parse("android.resource://" + this.getPackageName() + "/drawable/pp")
+        val firebaseStorage = FirebaseStorage.getInstance()
+        var storage = firebaseStorage.getReference().child("Tutor/"+ep+".jpg")
+        storage.putFile(contentURI)
+                .addOnProgressListener { taskSnapshot ->
+
+                }
+                .addOnSuccessListener { taskSnapshot ->
+                    storage.downloadUrl.addOnCompleteListener(){taskSnapshot->
+                        var url = taskSnapshot.result.toString()
+                        val ref= FirebaseDatabase.getInstance().getReference("Tutor").child(ep)
+                        ref.child("Profile Picture").setValue(url)
+                    }
+                }
+                .addOnFailureListener{
+                    exception -> exception.printStackTrace()
+                }
+    }
 
     fun getValues(){
         ep=intent.getStringExtra(emailPhone)
@@ -173,6 +195,12 @@ class SignUpTutor : Activity() {
 
         val toast = Toast.makeText(this, s, Toast.LENGTH_SHORT)
         toast.show()
+    }
+    override fun onBackPressed() {
+
+        finish()
+        val intent = Intent(this,FirstPage::class.java)
+        startActivity(intent)
     }
 
 }

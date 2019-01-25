@@ -16,6 +16,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.post_demo_student.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,7 +38,7 @@ class ViewPostStudent : Activity() {
         postsStudent.clear()
 
 
-        var dataBase= FirebaseDatabase.getInstance().getReference("Tutor Wanted")
+        var dataBase= FirebaseDatabase.getInstance().getReference("Tutor Wanted").child(sigenrId)
         dataBase.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
@@ -45,18 +46,17 @@ class ViewPostStudent : Activity() {
 
             override fun onDataChange(p0: DataSnapshot) {
 
-                for(h in p0.children){
-                    var name=h.child("Name").getValue().toString()
-                    var location=h.child("Location").getValue().toString()
-                    var clas=h.child("Class").getValue().toString()
-                    var subject=h.child("Subjects").getValue().toString()
-                    var day=h.child("Days").getValue().toString()
-                    var salary=h.child("Salary").getValue().toString()
-                    var university=h.child("University").getValue().toString()
-                    var thumbsup=h.child("Thumbs Up").getValue().toString()
-                    var thumbsdown=h.child("Thumbs Down").getValue().toString()
-                    var id=h.child("Phone").getValue().toString()
-                    val postdate=h.child("Date").getValue().toString()
+                    var name=p0.child("Name").getValue().toString()
+                    var location=p0.child("Location").getValue().toString()
+                    var clas=p0.child("Class").getValue().toString()
+                    var subject=p0.child("Subjects").getValue().toString()
+                    var day=p0.child("Days").getValue().toString()
+                    var salary=p0.child("Salary").getValue().toString()
+                    var university=p0.child("University").getValue().toString()
+                    var thumbsup=p0.child("Thumbs Up").getValue().toString()
+                    var thumbsdown=p0.child("Thumbs Down").getValue().toString()
+                    var id=p0.child("Phone").getValue().toString()
+                    val postdate=p0.child("Date").getValue().toString()
 
                     val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
                     val currentDate = sdf.format(Date())
@@ -64,7 +64,6 @@ class ViewPostStudent : Activity() {
                     var time=getTime(currentDate,postdate)
 
                     postsStudent.add(PostStudent(id,name+"  posted "+time,"Tutor Wanted",clas,subject,location,day,university,salary,thumbsup,thumbsdown))
-                }
                 prepareHomePagePostStudent()
 
             }
@@ -105,6 +104,20 @@ class ViewPostStudent : Activity() {
             holder.universityPost.text=card.universityPost
             holder.thumbUpPost.text=card.thumbUpPost
             holder.thumbDownPost.text=card.thumbDownPost
+            holder.deletePost.visibility=View.INVISIBLE
+            val firebase = FirebaseDatabase.getInstance().getReference("Student").child(card.id)
+            firebase.addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    var url=p0.child("Profile Picture").getValue().toString()
+                    GlideApp.with(this@ViewPostStudent).load(url).into(holder.pp);
+
+                }
+
+            })
 
             holder.thumbUpPost.setOnClickListener {
                 playSound()
@@ -182,6 +195,8 @@ class ViewPostStudent : Activity() {
 
         val viewProfile: CardView =view.view_profile_student
         val viewMap:CardView=view.view_map_home
+        val pp:CircleImageView=view.profile_image_student
+        val deletePost:TextView=view.delete_button_post_student
     }
 
     fun playSound() {

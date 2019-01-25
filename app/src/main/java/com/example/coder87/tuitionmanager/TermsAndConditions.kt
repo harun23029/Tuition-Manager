@@ -26,11 +26,15 @@ class TermsAndConditions : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_terms_and_conditions)
+        UserType=intent.getStringExtra(type)
+        UserId=intent.getStringExtra(emailPhone)
 
     }
 
 
     fun backToFirstPage(view: View) {
+        val firebase = FirebaseDatabase.getInstance().getReference(UserType).child(UserId)
+        firebase.removeValue()
         startActivity(Intent(this,
                 FirstPage::class.java))
     }
@@ -42,12 +46,13 @@ class TermsAndConditions : Activity() {
                 setCanceledOnTouchOutside(false)
                 show()
             }
-           getValues()
-
+            getValues()
             val intent=Intent(this,HomePage::class.java)
             intent.putExtra(emailPhone,UserId)
             intent.putExtra(type,UserType)
             startActivity(intent)
+            finish()
+
         }
         else{
             printToast()
@@ -122,6 +127,13 @@ class TermsAndConditions : Activity() {
 
         val toast = Toast.makeText(this, s, Toast.LENGTH_SHORT)
         toast.show()
+    }
+    override fun onBackPressed() {
+        val firebase = FirebaseDatabase.getInstance().getReference(UserType).child(UserId)
+        firebase.removeValue()
+        finish()
+        val intent = Intent(this,FirstPage::class.java)
+        startActivity(intent)
     }
 
 

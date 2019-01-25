@@ -5,12 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     tools:context=".SignUpStudent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:focusableInTouchMode="true"
         android:padding="10dp">
 
         <EditText
@@ -104,7 +106,8 @@
             android:text="Choose Profile Picture"
             android:clickable="true"
             android:layout_marginTop="10dp"
-            android:background="#7376af"/>
+            android:background="#2d22ff"
+            android:textColor="#ffffff"/>
 
         <Button
             android:layout_width="match_parent"
@@ -112,7 +115,8 @@
             android:text="Register"
             android:onClick="signUpStudent"
             android:textSize="20dp"
-            android:background="#7376af"
+            android:background="#2d22ff"
+            android:textColor="#ffffff"
             android:layout_marginTop="50dp" />
     </LinearLayout>
 

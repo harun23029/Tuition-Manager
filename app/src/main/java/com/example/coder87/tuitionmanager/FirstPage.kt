@@ -18,26 +18,15 @@ class FirstPage : Activity() {
     fun signIn(view: View) {
         startActivity(Intent(this,
                 SignIn::class.java))
+        finish()
     }
     fun signerType(view: View) {
         startActivity(Intent(this,
                 SignerType::class.java))
+        finish()
     }
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_first_page, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.credit_first_page -> {
-                startActivity(Intent(this,
-                        Credits::class.java))
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-
+    override fun onBackPressed() {
+        System.exit(0)
     }
 
 }

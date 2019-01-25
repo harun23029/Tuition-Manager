@@ -1,9 +1,11 @@
 package com.example.coder87.tuitionmanager
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.hardware.ConsumerIrManager
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.DrawableRes
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -92,6 +94,7 @@ class HomePage : AppCompatActivity() {
                 homePage.visibility=View.INVISIBLE
                 notificationsPageTutor.visibility=View.INVISIBLE
                 notificationsPageStudent.visibility=View.INVISIBLE
+
                 if(signer=="Tutor")
                 {
                     retrieveProfileTutor()
@@ -166,6 +169,7 @@ class HomePage : AppCompatActivity() {
             R.id.action_logout -> {
                 startActivity(Intent(this,
                         FirstPage::class.java))
+                finish()
                 true
             }
             R.id.submenu_tuition-> {
@@ -178,6 +182,26 @@ class HomePage : AppCompatActivity() {
                 selectedSubmenu=2
                 retrievepostsTutor()
                 prepareHomePagePostTutor()
+                true
+            }
+            R.id.action_credits->{
+                startActivity(Intent(this,Credits::class.java))
+                true
+            }
+            R.id.action_change_password->{
+                val intent=Intent(this,ChangePassword::class.java)
+                intent.putExtra(emailPhone,sigenrId)
+                intent.putExtra(type,signer)
+                startActivity(intent)
+                finish()
+                true
+            }
+            R.id.action_rating->{
+                val intent=Intent(this,RatingPage::class.java)
+                intent.putExtra(emailPhone,sigenrId)
+                intent.putExtra(type,signer)
+                startActivity(intent)
+                finish()
                 true
             }
             
@@ -303,6 +327,33 @@ class HomePage : AppCompatActivity() {
 
                 })
             }
+            holder.deleteButton.setOnClickListener {
+                val builder = AlertDialog.Builder(this@HomePage)
+                builder.setTitle("Delete Confirmation")
+                builder.setMessage("Are you really want to delete the post?")
+                builder.setPositiveButton("Yes"){dialog, which ->
+                    val firebase = FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id)
+                    firebase.removeValue().addOnSuccessListener {
+                        printToast("Post Deleted")
+                        retrievepostsTutor()
+                    }
+
+                }
+                builder.setNegativeButton("No"){dialog, which ->
+                }
+                val builder2=AlertDialog.Builder(this@HomePage)
+                builder2.setTitle("Delete Confirmation")
+                builder2.setMessage("Sorry! you are not permitted to delete this post.")
+                builder2.setNeutralButton("                       Ok"){dialog, which ->
+
+                }
+                val dialog2:AlertDialog=builder2.create()
+                val dialog: AlertDialog = builder.create()
+                if(card.id==sigenrId&&signer=="Tutor")
+                    dialog.show()
+                else
+                    dialog2.show()
+            }
 
 
             holder.viewProfile.setOnClickListener {
@@ -325,6 +376,7 @@ class HomePage : AppCompatActivity() {
         val thumbDownPost:TextView=view.post_thumbsdown_tutor
 
         val viewProfile:CardView=view.view_profile_tutor
+        val deleteButton:TextView=view.delete_button_post_tutor
         val pp:CircleImageView=view.profile_image_tutor
 
     }
@@ -453,6 +505,33 @@ class HomePage : AppCompatActivity() {
 
                 })
             }
+            holder.deleteButton.setOnClickListener {
+                val builder = AlertDialog.Builder(this@HomePage)
+                builder.setTitle("Delete Confirmation")
+                builder.setMessage("Are you really want to delete the post?")
+                builder.setPositiveButton("Yes"){dialog, which ->
+                    val firebase = FirebaseDatabase.getInstance().getReference("Tutor Wanted").child(card.id)
+                    firebase.removeValue().addOnSuccessListener {
+                        printToast("Post Deleted")
+                        retrievePostsStudent()
+                    }
+                }
+                builder.setNegativeButton("No"){dialog, which ->
+                }
+                val builder2=AlertDialog.Builder(this@HomePage)
+                builder2.setTitle("Delete Confirmation")
+                builder2.setMessage("Sorry! you are not permitted to delete this post.")
+                builder2.setNeutralButton("                       Ok"){dialog, which ->
+
+                }
+                val dialog2:AlertDialog=builder2.create()
+                val dialog: AlertDialog = builder.create()
+                if(card.id==sigenrId&&signer=="Student")
+                    dialog.show()
+                else
+                    dialog2.show()
+            }
+
             holder.viewProfile.setOnClickListener {
                 viewProfileStudent(card.id)
             }
@@ -493,6 +572,7 @@ class HomePage : AppCompatActivity() {
         val viewProfile:CardView=view.view_profile_student
         val viewMap:CardView=view.view_map_home
         val pp:CircleImageView=view.profile_image_student
+        val deleteButton:TextView=view.delete_button_post_student
     }
 
     fun playSound() {
@@ -521,13 +601,13 @@ class HomePage : AppCompatActivity() {
     fun viewPostTutor(posterId: String){
         val intent=Intent(this,ViewPostTutor::class.java)
         intent.putExtra(emailPhone,posterId)
-        intent.putExtra(type,signer)
+        intent.putExtra(type,"Tutor")
         startActivity(Intent(intent))
     }
     fun viewPostStudent(posterId: String){
         val intent=Intent(this,ViewPostStudent::class.java)
         intent.putExtra(emailPhone,posterId)
-        intent.putExtra(type,signer)
+        intent.putExtra(type,"Student")
         startActivity(Intent(intent))
     }
 
@@ -887,7 +967,7 @@ class HomePage : AppCompatActivity() {
 
                 override fun onDataChange(p0: DataSnapshot) {
                     var url=p0.child("Profile Picture").getValue().toString()
-                    GlideApp.with(this@HomePage).load(url).into(holder.pp);
+                    GlideApp.with(this@HomePage).load(url).into(holder.pp)
 
                 }
 
@@ -988,7 +1068,20 @@ class HomePage : AppCompatActivity() {
 
         return date
     }
+    private var doubleBackToExitPressedOnce = false
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            finish()
+            val intent = Intent(this,FirstPage::class.java)
+            startActivity(intent)
+        }
 
+        this.doubleBackToExitPressedOnce = true
+        if(doubleBackToExitPressedOnce==true)
+        Toast.makeText(this, "Press again to logout", Toast.LENGTH_SHORT).show()
+
+        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+    }
 
 
 
