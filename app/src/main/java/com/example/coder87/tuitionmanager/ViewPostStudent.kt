@@ -72,6 +72,7 @@ class ViewPostStudent : Activity() {
         })
 
 
+
     }
     private fun prepareHomePagePostStudent() {
         val cardsRecyclerView: RecyclerView = findViewById(R.id.view_post_student_holder)

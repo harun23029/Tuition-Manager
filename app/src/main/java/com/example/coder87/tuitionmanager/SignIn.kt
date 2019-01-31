@@ -37,6 +37,7 @@ class SignIn : Activity() {
     fun signerType(view: View) {
         startActivity(Intent(this,
                 SignerType::class.java))
+        finish()
     }
     fun logIn(view: View) {
         try{
@@ -51,12 +52,12 @@ class SignIn : Activity() {
     }
     fun checkAccount(){
         bindWidgets()
-        val progress = ProgressDialog(this).apply {
+        val progress = ProgressDialog(this@SignIn).apply {
             setTitle("Logging In....")
             setCancelable(false)
             setCanceledOnTouchOutside(false)
-            show()
         }
+        if(progress!=null) progress.show()
         validity="false"
         var databaseTutor=FirebaseDatabase.getInstance().getReference("Tutor").child(phoneInput.text.toString())
         val databaseStudent=FirebaseDatabase.getInstance().getReference("Student").child(phoneInput.text.toString())
@@ -71,11 +72,11 @@ class SignIn : Activity() {
                 override fun onDataChange(p0: DataSnapshot) {
                     password= p0.child("Password").getValue().toString()
                     if(password==passwordInput.text.toString()){
-                        progress.dismiss()
+                        if(progress!=null) progress.dismiss()
                         callHomePage()
                     }
                     else{
-                        progress.dismiss()
+                        if(progress!=null) progress.dismiss()
                         printToast("Phone number or password didn't match")
                     }
 
@@ -153,6 +154,7 @@ class SignIn : Activity() {
     }
     fun forgottenPassword(view: View){
         startActivity(Intent(this,FindAccountToChangePassword::class.java))
+        finish()
     }
     override fun onBackPressed() {
 

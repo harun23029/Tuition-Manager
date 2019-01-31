@@ -38,16 +38,15 @@ class SignerType : Activity() {
          rbStudent = findViewById (R.id.radioButton_student)
 
         bindWidgets()
-
-        nextButton.setOnClickListener {
             if (rbTutor.isChecked && validateInput())
             {
-                val progress = ProgressDialog(this).apply {
+                val progress = ProgressDialog(this@SignerType).apply {
                     setTitle("Checking Account")
                     setCancelable(false)
                     setCanceledOnTouchOutside(false)
-                    show()
+
                 }
+                if(progress!=null) progress.show()
                 val firebaseDatabase=FirebaseDatabase.getInstance().getReference("Tutor")
                 firebaseDatabase.addListenerForSingleValueEvent(object: ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
@@ -58,14 +57,14 @@ class SignerType : Activity() {
                         for(h in p0.children){
                             val uname=h.key.toString()
                             if(uname==phoneInput.text.toString()){
-                                progress.dismiss()
+                                if(progress!=null) progress.dismiss()
                                 printToast("You already have an account")
                                 hadAccount=true
                                 break
                             }
                         }
                         if(hadAccount==false){
-                            progress.dismiss()
+                            if(progress!=null) progress.dismiss()
                             callSignUpTutor()
                         }
                     }
@@ -75,12 +74,12 @@ class SignerType : Activity() {
             }
             else if (rbStudent.isChecked && validateInput())
             {
-                val progress = ProgressDialog(this).apply {
+                val progress = ProgressDialog(this@SignerType).apply {
                     setTitle("Checking Account")
                     setCancelable(false)
                     setCanceledOnTouchOutside(false)
-                    show()
                 }
+                if(progress!=null) progress.show()
                 val firebaseDatabase=FirebaseDatabase.getInstance().getReference("Student")
                 firebaseDatabase.addListenerForSingleValueEvent(object: ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
@@ -91,14 +90,14 @@ class SignerType : Activity() {
                         for(h in p0.children){
                             val uname=h.key.toString()
                             if(uname==phoneInput.text.toString()){
-                                progress.dismiss()
+                                if(progress!=null) progress.dismiss()
                                 printToast("You already have an account")
                                 hadAccount=true
                                 break
                             }
                         }
                         if(hadAccount==false){
-                            progress.dismiss()
+                            if(progress!=null) progress.dismiss()
                             callSignUpStudent()
                         }
                     }
@@ -109,10 +108,9 @@ class SignerType : Activity() {
                 printToast();
             }
 
-        }
     }
     private fun callSignUpTutor(){
-        val intent=Intent(this,SignUpTutor::class.java)
+        val intent=Intent(this,VerifyNewAccount::class.java)
         intent.putExtra(type,"Tutor")
         intent.putExtra(emailPhone,phoneInput.text.toString())
         intent.putExtra(password,passwordInput.text.toString())
@@ -120,7 +118,7 @@ class SignerType : Activity() {
         finish()
     }
     private fun callSignUpStudent(){
-        val intent=Intent(this, SignUpStudent::class.java)
+        val intent=Intent(this, VerifyNewAccount::class.java)
         intent.putExtra(type,"Student")
         intent.putExtra(emailPhone,phoneInput.text.toString())
         intent.putExtra(password,passwordInput.text.toString())

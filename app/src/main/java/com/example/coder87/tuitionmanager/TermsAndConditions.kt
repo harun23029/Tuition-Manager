@@ -40,13 +40,15 @@ class TermsAndConditions : Activity() {
     }
     fun okGoHomePage(view: View) {
         if(checkAgreement()){
-            val progress = ProgressDialog(this).apply {
+            val progress = ProgressDialog(this@TermsAndConditions).apply {
                 setTitle("Creating Your Account....")
                 setCancelable(false)
                 setCanceledOnTouchOutside(false)
-                show()
+
             }
+            if(progress!=null) progress.show()
             getValues()
+            if(progress!=null) progress.dismiss()
             val intent=Intent(this,HomePage::class.java)
             intent.putExtra(emailPhone,UserId)
             intent.putExtra(type,UserType)

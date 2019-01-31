@@ -1,6 +1,7 @@
 package com.example.coder87.tuitionmanager
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -49,6 +50,12 @@ class CreatePostTutor : Activity() {
     }
     fun savePost(view: View){
         bindWidgets()
+        val progress = ProgressDialog(this@CreatePostTutor).apply {
+            setTitle("Posting...")
+            setCancelable(false)
+            setCanceledOnTouchOutside(false)
+        }
+        if(progress!=null) progress.show()
         val database=FirebaseDatabase.getInstance().getReference("Tutor").child(signerId)
         val ref= FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(signerId)
         database.addListenerForSingleValueEvent(object: ValueEventListener {
@@ -72,11 +79,8 @@ class CreatePostTutor : Activity() {
                 val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
                 val currentDate = sdf.format(Date())
                 ref.child("Date").setValue(currentDate)
-
+                if(progress!=null) progress.dismiss()
                 goHome()
-
-
-
 
             }
 

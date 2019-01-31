@@ -134,9 +134,8 @@ class SignUpTutor : Activity() {
                     setTitle("Uploading Picture....")
                     setCancelable(false)
                     setCanceledOnTouchOutside(false)
-                    show()
                 }
-
+                if(progress!=null) progress.show()
                 val firebaseStorage = FirebaseStorage.getInstance()
                 var value = 0.0
                 var storage = firebaseStorage.getReference().child("Tutor/"+ep+".jpg")
@@ -197,7 +196,8 @@ class SignUpTutor : Activity() {
         toast.show()
     }
     override fun onBackPressed() {
-
+        val firebase = FirebaseDatabase.getInstance().getReference(tp).child(ep)
+        firebase.removeValue()
         finish()
         val intent = Intent(this,FirstPage::class.java)
         startActivity(intent)
