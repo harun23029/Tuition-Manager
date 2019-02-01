@@ -63,8 +63,8 @@ class CreatePostTuition : Activity() {
                 ref.child("Days").setValue(days.text.toString())
                 ref.child("Salary").setValue(salary.text.toString())
                 ref.child("University").setValue(preferableUniversities.text.toString())
-                ref.child("Thumbs Up").setValue(0)
-                ref.child("Thumbs Down").setValue(0)
+                ref.child("Thumbs Up/default").setValue(0)
+                ref.child("Thumbs Down/default").setValue(0)
                 ref.child("Phone").setValue(signerId)
 
                 val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
@@ -85,7 +85,7 @@ class CreatePostTuition : Activity() {
         startActivity(intent)
     }
     fun getValues(){
-        signer="Tutor"
+        signer="Student"
         signerId=intent.getStringExtra(emailPhone)
     }
     fun goHome(){

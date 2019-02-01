@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
-    android:background="#c6d2c9"
+    android:background="#627296"
     tools:context=".SignerType">
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,6 +20,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginLeft="20dp"
             android:text="Select type how do you want to sign up"
+            android:textColor="#0d0c0c"
             android:textSize="20dp"
             android:paddingTop="10dp"/>
 
@@ -83,10 +84,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Continue"
+                android:textStyle="bold"
                 android:id="@+id/next_button_signer_type"
                 android:layout_marginTop="50dp"
                 android:textSize="20dp"
-                android:background="#2d22ff"
+                android:background="@drawable/button_shape"
                 android:textColor="#ffffff"
                 android:onClick="signUp"/>
         </RadioGroup>

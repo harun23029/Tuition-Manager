@@ -17,14 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/create_post_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="createPost"
-                android:layout_gravity="top|end"
-                android:background="#f4f4f4"
-                app:srcCompat="@drawable/ic_add_black_24dp" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/home_page_post_holder"
                 android:layout_width="match_parent"

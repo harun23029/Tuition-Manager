@@ -35,12 +35,12 @@
         <activity android:name=".SignUpStudent" />
         <activity
             android:name=".HomePage"
-            android:label="Tuition Manager"
+            android:label="Home"
             android:theme="@style/AppCompatTheme" />
         <activity android:name=".Credits" />
         <activity android:name=".TermsAndConditions" />
-        <activity android:name=".CreatePostTutor" />
-        <activity android:name=".CreatePostTuition" />
+        <activity android:name=".CreatePostTutor" android:label="Create Post"/>
+        <activity android:name=".CreatePostTuition" android:label="Create Post"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

@@ -52,8 +52,8 @@ class ViewPostTutor : Activity() {
                     var subject=p0.child("Subjects").getValue().toString()
                     var day=p0.child("Days").getValue().toString()
                     var salary=p0.child("Salary").getValue().toString()
-                    var thumbsup=p0.child("Thumbs Up").getValue().toString()
-                    var thumbsdown=p0.child("Thumbs Down").getValue().toString()
+                    var thumbsup=p0.child("Thumbs Up").childrenCount.toString()
+                    var thumbsdown=p0.child("Thumbs Down").childrenCount.toString()
                     var phone=p0.child("Phone").getValue().toString()
                     val postdate=p0.child("Date").getValue().toString()
                     val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
@@ -119,36 +119,50 @@ class ViewPostTutor : Activity() {
 
             holder.thumbUpPost.setOnClickListener {
                 playSound()
-                val database=FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id)
+                val database=FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id+"/Thumbs Up")
                 database.addListenerForSingleValueEvent(object:ValueEventListener{
                     override fun onCancelled(p0: DatabaseError) {
 
                     }
 
                     override fun onDataChange(p0: DataSnapshot) {
-                        var thumbsUp=p0.child("Thumbs Up").getValue().toString()
-                        var like=thumbsUp.toInt()
-                        like++
-                        database.child("Thumbs Up").setValue(""+like+"")
-                        retrievepostsTutor()
+                        var x=false
+                        for(h in p0.children){
+                            if(h.key.toString()==sigenrId){
+                                x=true
+                                p0.child(sigenrId).ref.removeValue()
+                                break
+                            }
+                        }
+                        if(x==false){
+                            database.child(sigenrId).setValue(1)
+                        }
+                        holder.thumbUpPost.text=p0.childrenCount.toString()
                     }
 
                 })
             }
             holder.thumbDownPost.setOnClickListener {
                 playSound()
-                val database=FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id)
+                val database=FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id+"/Thumbs Down")
                 database.addListenerForSingleValueEvent(object:ValueEventListener{
                     override fun onCancelled(p0: DatabaseError) {
 
                     }
 
                     override fun onDataChange(p0: DataSnapshot) {
-                        var thumbsUp=p0.child("Thumbs Down").getValue().toString()
-                        var like=thumbsUp.toInt()
-                        like++
-                        database.child("Thumbs Down").setValue(""+like+"")
-                        retrievepostsTutor()
+                        var x=false
+                        for(h in p0.children){
+                            if(h.key.toString()==sigenrId){
+                                x=true
+                                p0.child(sigenrId).ref.removeValue()
+                                break
+                            }
+                        }
+                        if(x==false){
+                            database.child(sigenrId).setValue(1)
+                        }
+                        holder.thumbDownPost.text=p0.childrenCount.toString()
                     }
 
                 })
@@ -206,9 +220,9 @@ class ViewPostTutor : Activity() {
         var cyear=st3.nextToken().toInt()
         var pyear=st4.nextToken().toInt()
 
-        var day=1
-        var month=1
-        var year=1
+        var day=0
+        var month=0
+        var year=0
 
         if(cday>=pday&&cmonth>=pmonth&&cyear>=pyear){
             day=cday-pday
@@ -216,7 +230,7 @@ class ViewPostTutor : Activity() {
             year=cyear-pyear
         }
         else{
-            if(cyear>pyear){
+            if(cyear>=pyear){
                 if (cmonth >= pmonth) {
                     if (cday < pday) {
                         year = cyear - pyear;

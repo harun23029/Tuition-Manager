@@ -73,7 +73,7 @@ class HomePage : AppCompatActivity() {
         notificationsPageStudent=findViewById(R.id.notifications_page_student)
 
     }
-     fun createPost(view: View)
+     fun createPost()
     {
         if(signer=="Tutor")
         {
@@ -91,6 +91,7 @@ class HomePage : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_profile -> {
+                setTitle("Profile")
                 homePage.visibility=View.INVISIBLE
                 notificationsPageTutor.visibility=View.INVISIBLE
                 notificationsPageStudent.visibility=View.INVISIBLE
@@ -111,6 +112,7 @@ class HomePage : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_home -> {
+                setTitle("Home")
                 profilePageStudent.visibility=View.INVISIBLE
                 profilePageTutor.visibility= View.INVISIBLE
                 notificationsPageTutor.visibility= View.INVISIBLE
@@ -127,6 +129,7 @@ class HomePage : AppCompatActivity() {
             }
 
             R.id.navigation_notifications -> {
+                setTitle("Notifications")
                 homePage.visibility=View.INVISIBLE
                 profilePageTutor.visibility=View.INVISIBLE
                 profilePageStudent.visibility=View.INVISIBLE
@@ -204,6 +207,10 @@ class HomePage : AppCompatActivity() {
                 finish()
                 true
             }
+            R.id.action_post->{
+                createPost()
+                true
+            }
             
             else -> super.onOptionsItemSelected(item)
         }
@@ -227,8 +234,8 @@ class HomePage : AppCompatActivity() {
                     var subject=h.child("Subjects").getValue().toString()
                     var day=h.child("Days").getValue().toString()
                     var salary=h.child("Salary").getValue().toString()
-                    var thumbsup=h.child("Thumbs Up").getValue().toString()
-                    var thumbsdown=h.child("Thumbs Down").getValue().toString()
+                    var thumbsup=h.child("Thumbs Up").childrenCount.toString()
+                    var thumbsdown=h.child("Thumbs Down").childrenCount.toString()
                     var phone=h.child("Phone").getValue().toString()
                     val postdate=h.child("Date").getValue().toString()
                     val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
@@ -293,36 +300,50 @@ class HomePage : AppCompatActivity() {
             })
             holder.thumbUpPost.setOnClickListener {
                 playSound()
-                val database=FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id)
+                val database=FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id+"/Thumbs Up")
                 database.addListenerForSingleValueEvent(object:ValueEventListener{
                     override fun onCancelled(p0: DatabaseError) {
 
                     }
 
                     override fun onDataChange(p0: DataSnapshot) {
-                        var thumbsUp=p0.child("Thumbs Up").getValue().toString()
-                        var like=thumbsUp.toInt()
-                        like++
-                        database.child("Thumbs Up").setValue(""+like+"")
-                        retrievepostsTutor()
+                        var x=false
+                        for(h in p0.children){
+                           if(h.key.toString()==sigenrId){
+                               x=true
+                               p0.child(sigenrId).ref.removeValue()
+                               break
+                           }
+                        }
+                        if(x==false){
+                            database.child(sigenrId).setValue(1)
+                        }
+                        holder.thumbUpPost.text=p0.childrenCount.toString()
                     }
 
                 })
             }
             holder.thumbDownPost.setOnClickListener {
                 playSound()
-                val database=FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id)
+                val database=FirebaseDatabase.getInstance().getReference("Tuition Wanted").child(card.id+"/Thumbs Down")
                 database.addListenerForSingleValueEvent(object:ValueEventListener{
                     override fun onCancelled(p0: DatabaseError) {
 
                     }
 
                     override fun onDataChange(p0: DataSnapshot) {
-                        var thumbsUp=p0.child("Thumbs Down").getValue().toString()
-                        var like=thumbsUp.toInt()
-                        like++
-                        database.child("Thumbs Down").setValue(""+like+"")
-                        retrievepostsTutor()
+                        var x=false
+                        for(h in p0.children){
+                            if(h.key.toString()==sigenrId){
+                                x=true
+                                p0.child(sigenrId).ref.removeValue()
+                                break
+                            }
+                        }
+                        if(x==false){
+                            database.child(sigenrId).setValue(1)
+                        }
+                        holder.thumbDownPost.text=p0.childrenCount.toString()
                     }
 
                 })
@@ -403,8 +424,8 @@ class HomePage : AppCompatActivity() {
                     var day=h.child("Days").getValue().toString()
                     var salary=h.child("Salary").getValue().toString()
                     var university=h.child("University").getValue().toString()
-                    var thumbsup=h.child("Thumbs Up").getValue().toString()
-                    var thumbsdown=h.child("Thumbs Down").getValue().toString()
+                    var thumbsup=h.child("Thumbs Up").childrenCount.toString()
+                    var thumbsdown=h.child("Thumbs Down").childrenCount.toString()
                     var id=h.child("Phone").getValue().toString()
                     val postdate=h.child("Date").getValue().toString()
 
@@ -471,36 +492,50 @@ class HomePage : AppCompatActivity() {
 
             holder.thumbUpPost.setOnClickListener {
                 playSound()
-                val database=FirebaseDatabase.getInstance().getReference("Tutor Wanted").child(card.id)
+                val database=FirebaseDatabase.getInstance().getReference("Tutor Wanted").child(card.id+"/Thumbs Up")
                 database.addListenerForSingleValueEvent(object:ValueEventListener{
                     override fun onCancelled(p0: DatabaseError) {
 
                     }
 
                     override fun onDataChange(p0: DataSnapshot) {
-                        var thumbsUp=p0.child("Thumbs Up").getValue().toString()
-                        var like=thumbsUp.toInt()
-                        like++
-                        database.child("Thumbs Up").setValue(""+like+"")
-                        retrievePostsStudent()
+                        var x=false
+                        for(h in p0.children){
+                            if(h.key.toString()==sigenrId){
+                                x=true
+                                p0.child(sigenrId).ref.removeValue()
+                                break
+                            }
+                        }
+                        if(x==false){
+                            database.child(sigenrId).setValue(1)
+                        }
+                        holder.thumbUpPost.text=p0.childrenCount.toString()
                     }
 
                 })
             }
             holder.thumbDownPost.setOnClickListener {
                 playSound()
-                val database=FirebaseDatabase.getInstance().getReference("Tutor Wanted").child(card.id)
+                val database=FirebaseDatabase.getInstance().getReference("Tutor Wanted").child(card.id+"/Thumbs Down")
                 database.addListenerForSingleValueEvent(object:ValueEventListener{
                     override fun onCancelled(p0: DatabaseError) {
 
                     }
 
                     override fun onDataChange(p0: DataSnapshot) {
-                        var thumbsUp=p0.child("Thumbs Down").getValue().toString()
-                        var like=thumbsUp.toInt()
-                        like++
-                        database.child("Thumbs Down").setValue(""+like+"")
-                        retrievePostsStudent()
+                        var x=false
+                        for(h in p0.children){
+                            if(h.key.toString()==sigenrId){
+                                x=true
+                                p0.child(sigenrId).ref.removeValue()
+                                break
+                            }
+                        }
+                        if(x==false){
+                            database.child(sigenrId).setValue(1)
+                        }
+                        holder.thumbDownPost.text=p0.childrenCount.toString()
                     }
 
                 })
@@ -1014,9 +1049,9 @@ class HomePage : AppCompatActivity() {
         var cyear=st3.nextToken().toInt()
         var pyear=st4.nextToken().toInt()
 
-        var day=1
-        var month=1
-        var year=1
+        var day=0
+        var month=0
+        var year=0
 
         if(cday>=pday&&cmonth>=pmonth&&cyear>=pyear){
             day=cday-pday
@@ -1024,7 +1059,7 @@ class HomePage : AppCompatActivity() {
             year=cyear-pyear
         }
         else{
-            if(cyear>pyear){
+            if(cyear>=pyear){
                 if (cmonth >= pmonth) {
                     if (cday < pday) {
                         year = cyear - pyear;
